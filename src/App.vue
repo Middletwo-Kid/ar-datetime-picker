@@ -6,7 +6,8 @@
       :type.sync="type"
       :select.sync="select"
       :year.sync="year"
-      :month.sync="month" />
+      :month.sync="month"
+      @confirm="onConfirm" />
   </div>
 </template>
 
@@ -24,7 +25,7 @@ export default {
       endYear: '2025',
       year: [],
       month: [],
-      type: 'month',
+      type: 'year',
       select: 'single',
     };
   },
@@ -35,6 +36,12 @@ export default {
       handler(newVal) {
         console.log(newVal);
       },
+    },
+  },
+  methods: {
+    onConfirm() {
+      // eslint-disable-next-line no-alert
+      alert('13');
     },
   },
 };

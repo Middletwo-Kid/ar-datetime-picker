@@ -45,7 +45,7 @@
                   :index=0 />
           <div class="ar-datatime-picker-column__gap">至</div>
            <column type="year"
-                  :column="yearsArr"
+                  :column="secondYearsArr"
                   :value.sync="currentYearValue[1]"
                   :index=1 />
           <column type="month"
@@ -134,6 +134,9 @@ export default {
     yearsArr() {
       return getAllYears(this.startYear, this.endYear);
     },
+    secondYearsArr() {
+      return getAllYears(this.startYear, this.endYear);
+    },
   },
   watch: {
     type: {
@@ -142,6 +145,7 @@ export default {
         this.currentType = value || 'year';
         this.currentYearValue = [];
         this.currentMonthValue = [];
+        // 单选年：[2020], 范围：[2020, 2021]
       },
     },
     select: {
@@ -150,6 +154,7 @@ export default {
         this.currentSelect = value || 'single';
         this.currentYearValue = [];
         this.currentMonthValue = [];
+        // 切换之后，应该思考一下初始值的问题
       },
     },
     year: {
@@ -160,6 +165,10 @@ export default {
         const val = this.select !== 'year' && newVal && newVal.length === len
           ? newVal : new Array(len).fill('');
         if (this.type !== 'year' && !val[0]) val[0] = new Date().getFullYear();
+        if (this.type !== 'year' && this.select === 'range' && val[0] && !val[1]) {
+          if (this.month && this.month[0] !== 12) val[1] = (+val[0]);
+          else val[1] = val[0] + 1;
+        }
         this.currentYearValue = JSON.parse(JSON.stringify(val));
       },
     },
@@ -171,6 +180,10 @@ export default {
         const val = this.select !== 'year' && newVal && newVal.length === len
           ? newVal : new Array(len).fill('');
         if (this.type !== 'year' && !val[0]) val[0] = new Date().getMonth() + 1;
+        if (this.type !== 'year' && this.select === 'range' && val[0]) {
+          if (this.year && this.year[0] !== this.year[1]) val[1] = 1;
+          else val[1] = val[0] + 1;
+        }
         this.currentMonthValue = JSON.parse(JSON.stringify(val));
       },
     },
@@ -199,14 +212,25 @@ export default {
         this.$emit('update:year', currentYearValue);
         if (this.month.length > 0) this.$emit('update:month', []);
       } else if (this.currentType === 'month') {
+        let { currentMonthValue } = this;
         if (this.select === 'single' && currentYearValue.length === 0) {
           currentYearValue = [this.yearsArr[0]];
         }
-        const currentMonthValue = this.currentMonthValue && this.currentMonthValue.length > 0
-          ? this.currentMonthValue : [1];
+        if (this.select === 'single' && (!this.currentMonthValue || this.currentMonthValue.length === 0)) {
+          currentMonthValue = [1];
+        }
+
+        if (this.select === 'range') {
+          if (this.currentYearValue.length !== 2 || this.currentMonthValue.length !== 2) return;
+          if ((this.currentYearValue[1] < this.currentYearValue[0])
+          || (this.currentYearValue[1] === this.currentYearValue[0]
+          && (this.currentMonthValue[1] < this.currentMonthValue[0]))) return;
+        }
         this.$emit('update:year', currentYearValue);
         this.$emit('update:month', currentMonthValue);
       }
+
+      this.$emit('confirm');
     },
     // 不限
     onUnlimit() {

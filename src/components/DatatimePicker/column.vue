@@ -154,7 +154,6 @@ export default {
       // eslint-disable-next-line no-param-reassign
       index = this.adjust(index) || 0;
       const offset = -index * ITEMHEIGHT;
-      // console.log(this.index, '1');
       const trigger = () => {
         if (index !== this.currentIndex) {
           this.currentIndex = index;
