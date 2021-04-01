@@ -22,9 +22,9 @@ export default {
     return {
       startYear: '2018',
       endYear: '2025',
-      year: ['2020'],
-      month: ['1'],
-      type: 'year',
+      year: [],
+      month: [],
+      type: 'month',
       select: 'single',
     };
   },

@@ -28,6 +28,7 @@ const ITEMHEIGHT = 44;
 const COUNT = 5;
 const DEFAULT_DURATION = 200;
 const BASEOFFSET = (ITEMHEIGHT * (COUNT - 1)) / 2;
+const MONTHARR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default {
   name: 'ArColumn',
@@ -37,24 +38,35 @@ export default {
       type: String,
       default: 'year',
     },
+    column: {
+      type: Array,
+      default: () => [],
+    },
+    value: {
+      type: Array,
+      default: () => [],
+    },
+    index: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
-      yearArr: [2015, 2016, 2017, 2018, 2019, 2020, 2021],
-      monthArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       offset: 0,
       touchStartTime: 0,
       momentumOffset: 0,
       moving: false,
       transitionEndTrigger: null,
+      currentIndex: 0,
     };
   },
   computed: {
     columnList() {
       switch (this.type) {
-        case 'year': return this.yearArr;
-        case 'month': return this.monthArr;
-        default: return this.yearArr;
+        case 'year': return this.column;
+        case 'month': return MONTHARR;
+        default: return this.column;
       }
     },
     // 通过更改ul的样式达到改变高亮的位置(修改offset)
@@ -108,7 +120,7 @@ export default {
       const duration = Date.now() - this.touchStartTime;
       const allMomentum = duration < MOMENTUM_LIMIT_TIME
                           && Math.abs(distance) > MOMENTUM_LIMIT_DISTANCE;
-      console.log('handleTouchEnd', distance, duration, allMomentum);
+
       // 惯性滑动思路:
       // 在手指离开屏幕时，如果和上一次 move 时的间隔小于 `MOMENTUM_LIMIT_TIME` 且 move
       // 距离大于 `MOMENTUM_LIMIT_DISTANCE` 时，执行惯性滑动
@@ -118,7 +130,6 @@ export default {
       }
 
       const index = this.getIndexByOffset(this.offset);
-      console.log('index', index);
       this.duration = DEFAULT_DURATION;
       this.setIndex(index, true);
     },
@@ -140,10 +151,8 @@ export default {
     },
 
     setIndex(index, emitChange) {
-      console.log('钱', index);
       // eslint-disable-next-line no-param-reassign
       index = this.adjust(index) || 0;
-      console.log('后', index);
       const offset = -index * ITEMHEIGHT;
 
       const trigger = () => {
@@ -151,11 +160,9 @@ export default {
           this.currentIndex = index;
 
           if (emitChange) {
-            // this.$emit('change', {
-            //   columnIndex: this.columnIndex,
-            //   currentIndex: index,
-            //   item: this.columnList[index],
-            // });
+            const value = JSON.parse(JSON.stringify(this.value));
+            value[this.index] = this.columnList[index];
+            this.$emit('update:value', value);
           }
         }
       };
@@ -169,6 +176,19 @@ export default {
       }
 
       this.offset = offset;
+    },
+  },
+  watch: {
+    value: {
+      deep: true,
+      immediate: true,
+      handler(val) {
+        const column = this.type === 'year' ? this.column : MONTHARR;
+        let index = column.findIndex((item) => (+item) === (+val));
+        index = index > -1 ? index : 0;
+        this.currentIndex = index;
+        this.setIndex(index);
+      },
     },
   },
   mounted() {

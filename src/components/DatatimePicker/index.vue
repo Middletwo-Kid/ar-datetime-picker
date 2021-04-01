@@ -16,7 +16,7 @@
               :key="item"
               :label="item"
               :selectType="currentSelect"
-              :value.sync="currentValue"
+              :value.sync="currentYearValue"
               @click="onChangeYear" />
       </div>
       <!-- 年月 -->
@@ -25,8 +25,13 @@
         <div class="ar-datatime-picker-column__wrapper"
              v-if="currentSelect === 'single'"
         >
-          <column type="year" />
-          <column type="month"/>
+          <column type="year"
+                  :column="yearsArr"
+                  :value.sync="currentYearValue"
+                  :index=0 />
+          <column type="month"
+                  :value.sync="currentMonthValue"
+                  :index=0 />
         </div>
         <div class="ar-datatime-picker-column__wrapper"
              v-if="currentSelect === 'range'"
@@ -109,16 +114,15 @@ export default {
   },
   data() {
     return {
-      // 选择年月日
       currentType: 'year',
-      // 单选or范围
       currentSelect: 'single',
-      currentValue: [],
+      currentYearValue: [],
+      currentMonthValue: [],
     };
   },
   computed: {
     yearsArr() {
-      return this.currentType === 'year' ? getAllYears(this.startYear, this.endYear) : [];
+      return getAllYears(this.startYear, this.endYear);
     },
   },
   watch: {
@@ -126,21 +130,30 @@ export default {
       immediate: true,
       handler(value) {
         this.currentType = value || 'year';
-        this.currentValue = [];
+        this.currentYearValue = [];
+        this.currentMonthValue = [];
       },
     },
     select: {
       immediate: true,
       handler(value) {
         this.currentSelect = value || 'single';
-        this.currentValue = [];
+        this.currentYearValue = [];
+        this.currentMonthValue = [];
       },
     },
     year: {
       immediate: true,
       deep: true,
       handler(newVal) {
-        this.currentValue = newVal;
+        this.currentYearValue = newVal;
+      },
+    },
+    month: {
+      immediate: true,
+      deep: true,
+      handler(newVal) {
+        this.currentMonthValue = newVal;
       },
     },
   },
@@ -153,18 +166,35 @@ export default {
     },
     // 改变year
     onChangeYear() {
-      this.$emit('change', this.currentValue);
+      this.$emit('change', this.currentYearValue);
+    },
+    onStartYear({ index, value }) {
+      const currentYearValue = JSON.parse(JSON.stringify(this.currentYearValue));
+      currentYearValue[index] = value;
     },
     // 确定
     onComfirm() {
+      const currentYearValue = this.currentYearValue ? this.currentYearValue : this.yearsArr[0];
+
       if (this.currentType === 'year') {
-        this.$emit('update:year', this.currentValue);
+        this.$emit('update:year', currentYearValue);
+      } else if (this.currentType === 'month') {
+        if (this.currentYearValue.length < 2 && this.currentMonthValue < 2) return;
+        this.$emit('update:year', currentYearValue);
+        this.$emit('update:month', this.currentMonthValue || 1);
       }
     },
     // 不限
     onUnlimit() {
       if (this.currentType === 'year') {
         this.$emit('update:year', []);
+      } else if (this.currentType === 'month') {
+        this.$emit('update:year', []);
+        this.$emit('update:month', []);
+      } else {
+        this.$emit('update:year', []);
+        this.$emit('update:month', []);
+        this.$emit('update:day', []);
       }
     },
   },
