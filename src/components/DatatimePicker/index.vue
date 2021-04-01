@@ -27,20 +27,30 @@
         >
           <column type="year"
                   :column="yearsArr"
-                  :value.sync="currentYearValue"
+                  :value.sync="currentYearValue[0]"
                   :index=0 />
           <column type="month"
-                  :value.sync="currentMonthValue"
+                  :value.sync="currentMonthValue[0]"
                   :index=0 />
         </div>
         <div class="ar-datatime-picker-column__wrapper"
              v-if="currentSelect === 'range'"
         >
-          <column type="year" />
-          <column type="month"/>
+           <column type="year"
+                  :column="yearsArr"
+                  :value.sync="currentYearValue[0]"
+                  :index=0 />
+          <column type="month"
+                  :value.sync="currentMonthValue[0]"
+                  :index=0 />
           <div class="ar-datatime-picker-column__gap">至</div>
-          <column type="year" />
-          <column type="month"/>
+           <column type="year"
+                  :column="yearsArr"
+                  :value.sync="currentYearValue[1]"
+                  :index=1 />
+          <column type="month"
+                  :value.sync="currentMonthValue[1]"
+                  :index=1 />
         </div>
       </div>
       <!-- 年月日 -->
@@ -146,14 +156,21 @@ export default {
       immediate: true,
       deep: true,
       handler(newVal) {
-        this.currentYearValue = newVal;
+        const len = this.select === 'single' ? 1 : 2;
+        console.log(this.type !== 'year', newVal, newVal.length, newVal.length === len, '--------');
+        const val = this.select !== 'year' && newVal && newVal.length === len ? newVal : new Array(len).fill('');
+        if (this.type !== 'year' && !val[0]) val[0] = new Date().getFullYear();
+        this.currentYearValue = val;
       },
     },
     month: {
       immediate: true,
       deep: true,
       handler(newVal) {
-        this.currentMonthValue = newVal;
+        const len = this.select === 'single' ? 1 : 2;
+        const val = this.select !== 'year' && newVal && newVal.length === len ? newVal : new Array(len).fill('');
+        if (this.type !== 'year' && !val[0]) val[0] = new Date().getMonth() + 1;
+        this.currentMonthValue = val;
       },
     },
   },
@@ -169,14 +186,16 @@ export default {
       this.$emit('change', this.currentYearValue);
     },
     onStartYear({ index, value }) {
+      console.log('onStartYear', index, value);
       const currentYearValue = JSON.parse(JSON.stringify(this.currentYearValue));
       currentYearValue[index] = value;
     },
     // 确定
     onComfirm() {
-      const currentYearValue = this.currentYearValue ? this.currentYearValue : this.yearsArr[0];
+      const { currentYearValue } = this;
 
       if (this.currentType === 'year') {
+        if (currentYearValue.length === 0 || currentYearValue[0].length === 0) return;
         this.$emit('update:year', currentYearValue);
       } else if (this.currentType === 'month') {
         if (this.currentYearValue.length < 2 && this.currentMonthValue < 2) return;

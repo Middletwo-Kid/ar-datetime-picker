@@ -43,8 +43,8 @@ export default {
       default: () => [],
     },
     value: {
-      type: Array,
-      default: () => [],
+      type: [String, Number],
+      default: '',
     },
     index: {
       type: Number,
@@ -154,15 +154,13 @@ export default {
       // eslint-disable-next-line no-param-reassign
       index = this.adjust(index) || 0;
       const offset = -index * ITEMHEIGHT;
-
+      // console.log(this.index, '1');
       const trigger = () => {
         if (index !== this.currentIndex) {
           this.currentIndex = index;
 
           if (emitChange) {
-            const value = JSON.parse(JSON.stringify(this.value));
-            value[this.index] = this.columnList[index];
-            this.$emit('update:value', value);
+            this.$emit('update:value', this.columnList[index]);
           }
         }
       };
@@ -180,7 +178,6 @@ export default {
   },
   watch: {
     value: {
-      deep: true,
       immediate: true,
       handler(val) {
         const column = this.type === 'year' ? this.column : MONTHARR;

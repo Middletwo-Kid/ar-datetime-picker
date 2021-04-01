@@ -33,8 +33,12 @@ export default {
           this.$emit('update:value', [label]);
         } else {
           const value = JSON.parse(JSON.stringify(this.value));
-          value.push(label);
-          this.$emit('update:value', value);
+          if (label > value[0]) {
+            value.push(label);
+            this.$emit('update:value', value);
+          } else {
+            this.$emit('update:value', [label]);
+          }
         }
       }
       this.$emit('click', label);

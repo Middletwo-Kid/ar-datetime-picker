@@ -24,7 +24,7 @@ export default {
       endYear: '2025',
       year: [],
       month: [],
-      type: 'month',
+      type: 'year',
       select: 'single',
     };
   },
