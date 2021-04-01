@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <datatime-picker
+      :startYear="startYear"
+      :endYear="endYear"
+      :type.sync="type"
+      :select.sync="select"
+      :year.sync="year"
+      :month.sync="month" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import DatatimePicker from './components/DatatimePicker/index.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    DatatimePicker,
+  },
+  data() {
+    return {
+      startYear: '2018',
+      endYear: '2025',
+      year: ['2020'],
+      month: ['1'],
+      type: 'year',
+      select: 'single',
+    };
+  },
+  watch: {
+    year: {
+      immediate: true,
+      deep: true,
+      handler(newVal) {
+        console.log(newVal);
+      },
+    },
   },
 };
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
