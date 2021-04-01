@@ -157,10 +157,10 @@ export default {
       deep: true,
       handler(newVal) {
         const len = this.select === 'single' ? 1 : 2;
-        console.log(this.type !== 'year', newVal, newVal.length, newVal.length === len, '--------');
-        const val = this.select !== 'year' && newVal && newVal.length === len ? newVal : new Array(len).fill('');
+        const val = this.select !== 'year' && newVal && newVal.length === len
+          ? newVal : new Array(len).fill('');
         if (this.type !== 'year' && !val[0]) val[0] = new Date().getFullYear();
-        this.currentYearValue = val;
+        this.currentYearValue = JSON.parse(JSON.stringify(val));
       },
     },
     month: {
@@ -168,9 +168,10 @@ export default {
       deep: true,
       handler(newVal) {
         const len = this.select === 'single' ? 1 : 2;
-        const val = this.select !== 'year' && newVal && newVal.length === len ? newVal : new Array(len).fill('');
+        const val = this.select !== 'year' && newVal && newVal.length === len
+          ? newVal : new Array(len).fill('');
         if (this.type !== 'year' && !val[0]) val[0] = new Date().getMonth() + 1;
-        this.currentMonthValue = val;
+        this.currentMonthValue = JSON.parse(JSON.stringify(val));
       },
     },
   },
@@ -186,21 +187,25 @@ export default {
       this.$emit('change', this.currentYearValue);
     },
     onStartYear({ index, value }) {
-      console.log('onStartYear', index, value);
       const currentYearValue = JSON.parse(JSON.stringify(this.currentYearValue));
       currentYearValue[index] = value;
     },
     // 确定
     onComfirm() {
-      const { currentYearValue } = this;
+      let { currentYearValue } = this;
 
       if (this.currentType === 'year') {
         if (currentYearValue.length === 0 || currentYearValue[0].length === 0) return;
         this.$emit('update:year', currentYearValue);
+        if (this.month.length > 0) this.$emit('update:month', []);
       } else if (this.currentType === 'month') {
-        if (this.currentYearValue.length < 2 && this.currentMonthValue < 2) return;
+        if (this.select === 'single' && currentYearValue.length === 0) {
+          currentYearValue = [this.yearsArr[0]];
+        }
+        const currentMonthValue = this.currentMonthValue && this.currentMonthValue.length > 0
+          ? this.currentMonthValue : [1];
         this.$emit('update:year', currentYearValue);
-        this.$emit('update:month', this.currentMonthValue || 1);
+        this.$emit('update:month', currentMonthValue);
       }
     },
     // 不限
