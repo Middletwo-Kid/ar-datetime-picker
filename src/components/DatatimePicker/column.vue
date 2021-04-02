@@ -37,7 +37,18 @@ export default {
       type: Array,
       default: () => [],
     },
+<<<<<<< HEAD
     value: [String, Number],
+=======
+    value: {
+      type: [String, Number],
+      default: '',
+    },
+    index: {
+      type: Number,
+      default: 0,
+    },
+>>>>>>> 373240826da77fc817294da12710bf79149fb86b
   },
   data() {
     return {
@@ -136,16 +147,19 @@ export default {
       // eslint-disable-next-line no-param-reassign
       index = this.adjust(index) || 0;
       const offset = -index * ITEMHEIGHT;
-
       const trigger = () => {
         if (index !== this.currentIndex) {
           this.currentIndex = index;
 
           if (emitChange) {
+<<<<<<< HEAD
             // const value = JSON.parse(JSON.stringify(this.value));
             // value[this.index] = this.columnList[index];
             this.$emit('update:value', this.columnList[index]);
             this.$emit('change', this.columnList[index]);
+=======
+            this.$emit('update:value', this.columnList[index]);
+>>>>>>> 373240826da77fc817294da12710bf79149fb86b
           }
         }
       };

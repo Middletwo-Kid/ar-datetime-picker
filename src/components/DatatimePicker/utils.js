@@ -17,6 +17,25 @@ const getAllYears = (startYear, endYear) => {
   return arr;
 };
 
+// 获得所有的月组合
+const getAllMonths = (startMonth, endMonth) => {
+  const start = startMonth ? (+startMonth) : 1;
+  const end = endMonth ? (+endMonth) : new Date().getMonth() + 1;
+
+  if (Number.isNaN(start) || Number.isNaN(end)) {
+    throw new Error('startMonth or endMonth is invaild');
+  }
+
+  const arr = [];
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = start; i <= end; i++) {
+    arr.push(i);
+  }
+  console.log(arr);
+  return arr;
+};
+
 // [min, max)
 const range = (num, min, max) => Math.min(Math.max(num, min), max - 1);
 
@@ -50,4 +69,5 @@ module.exports = {
   getSelectOptions,
   getStartYear,
   getEndYear,
+  getAllMonths,
 };
