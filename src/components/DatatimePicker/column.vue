@@ -37,18 +37,7 @@ export default {
       type: Array,
       default: () => [],
     },
-<<<<<<< HEAD
     value: [String, Number],
-=======
-    value: {
-      type: [String, Number],
-      default: '',
-    },
-    index: {
-      type: Number,
-      default: 0,
-    },
->>>>>>> 373240826da77fc817294da12710bf79149fb86b
   },
   data() {
     return {
