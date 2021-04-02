@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import { range } from './utils';
-import ToucheMixins from './mixins/touch';
-import { preventDefault } from './utils/event';
+import range from '../utils/num';
+import ToucheMixins from '../mixins/touch';
+import { preventDefault } from '../utils/event';
 
 const MOMENTUM_LIMIT_TIME = 300;
 const MOMENTUM_LIMIT_DISTANCE = 15;
@@ -142,8 +142,6 @@ export default {
           this.currentIndex = index;
 
           if (emitChange) {
-            // const value = JSON.parse(JSON.stringify(this.value));
-            // value[this.index] = this.columnList[index];
             this.$emit('update:value', this.columnList[index]);
             this.$emit('change', {
               value: this.columnList[index],

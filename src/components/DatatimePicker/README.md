@@ -1,20 +1,39 @@
-1. typeOptions
-为`{name: xxx, value: xxx}`的数组对象，表示年月日三种类型, `value`的值必须为`year、month、day`中的一种。
+## DatatimePicker 时间选择
 
-2. selectOptions
-为`{name: xxx, value: xxx}`的数组对象，表示单选、范围两种类型。`value`的值必须为`single、range`中的一种。
+### 介绍
 
-3. year
-当前选中的年份，数据类型为数组，默认为今年，如: `[2021]`。
+时间选择器，支持年、月、日期、不限等纬度，可以选择某段时间或者选择某天、某月或某日。
 
-4. month
-当前选中的月份，数据类型为数组，默认为这个月, 如：`[4]`。
+### 引入
 
-5. day
-当前选中的日，数据类型为数组，默认为今日, 如：`[1]`。
+```js
+import Vue from 'vue';
+import { DatatimePicker } from 'ar-ui';
 
-6. startYear
-其实年份，可以为`string`和`number`, 默认为当前年份的前十年，如: `2011`。
+Vue.use(DatatimePicker);
+```
 
-7. endYear
-其实年份，可以为`string`和`number`, 默认为当前年份的后十年，如: `2031`。
+### 代码演示
+
+### API
+
+#### props
+
+| 参数         | 说明                                            | 类型                     | 默认值                                                       |
+| ------------ | ----------------------------------------------- | ------------------------ | ------------------------------------------------------------ |
+| `type`       | 纬度，可选值为`year、month、day`                | `string`                 | `year`                                                       |
+| `typeOption` | 纬度配置项。`value`的可选值为`year、month、day` | `[{name:'', value: ''}]` | `[{value: 'year', name: '年'}, {value: 'month', name: '月'}, {value: 'day', name: '日'}]` |
+| `startTime`  | 起始时间，以`/`为分割，例如：`2021/4/2`。       | `string`                 | `''`                                                         |
+| `endTime`    | 终止时间，以`/`为分割，例如：`2025/4/2`。       | `string`                 | `''`                                                         |
+| `minTime`    | 最小时间， 以`/`为分割，例如：`2025/4/2`。      | `string`                 | 为当前日期的前十年。                                         |
+| `maxTime`    | 最大时间， 以`/`为分割，例如：`2025/4/2`。      | `string`                 | 为当前日期的后十年。                                         |
+
+### Events
+
+| 事件名    | 说明                       | 回调参数                       |
+| --------- | -------------------------- | ------------------------------ |
+| `confrim` | 点击确定按钮时触发的事件。 | `{startTime: '', endTime: ''}` |
+| `unlimit` | 点击不限按钮时触发的事件。 | 无                             |
+| `cancel`  | 点击取消按钮时触发的事件。 | 无                             |
+| `change`  |                            |                                |
+

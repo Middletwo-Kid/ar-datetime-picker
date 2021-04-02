@@ -39,15 +39,13 @@
 </template>
 
 <script>
-import Options from './options.vue';
-import SelectTime from './time.vue';
-import SelectYear from './year.vue';
-import SelectMonth from './month.vue';
-import SelectDay from './day.vue';
-import Bottom from './footer.vue';
-import {
-  getTypeOptions,
-} from './utils';
+import Options from './src/options.vue';
+import SelectTime from './src/time.vue';
+import SelectYear from './src/year.vue';
+import SelectMonth from './src/month.vue';
+import SelectDay from './src/day.vue';
+import Bottom from './src/footer.vue';
+import getTypeOptions from './utils/data';
 
 export default {
   name: 'ArDatatimePicker',
@@ -78,7 +76,7 @@ export default {
       currentType: '',
       firstValue: '',
       secondValue: '',
-      isFocus: true,
+      isFocus: false,
       focusIndex: '',
     };
   },
@@ -118,7 +116,7 @@ export default {
     onComfirm() {
       this.$emit('update:startTime', this.firstValue);
       this.$emit('update:endTime', this.secondValue);
-      this.$emit('confimr', {
+      this.$emit('confirm', {
         startTime: this.firstValue,
         endTime: this.secondValue,
       });
