@@ -3,7 +3,9 @@
     <datatime-picker
       :type.sync="type"
       :startTime.sync="startTime"
-      :endTime.sync="endTime" />
+      :endTime.sync="endTime"
+      :minTime="minTime"
+      :maxTime="maxTime" />
   </div>
 </template>
 
@@ -17,9 +19,11 @@ export default {
   },
   data() {
     return {
-      startTime: '2014',
-      endTime: '2016',
-      type: '',
+      startTime: '',
+      endTime: '',
+      type: 'year',
+      maxTime: '2021/4/2',
+      minTime: '2014/4/2',
     };
   },
 };

@@ -14,6 +14,8 @@
       <select-year v-if="isFocus && currentType ==='year'"
                    :startTime.sync="firstValue"
                    :endTime.sync="secondValue"
+                   :minTime="minTime"
+                   :maxTime="maxTime"
                    :index="focusIndex" />
       <select-month v-if="isFocus && currentType ==='month'"
                     :startTime.sync="firstValue"
@@ -54,6 +56,8 @@ export default {
     },
     startTime: [String, Number],
     endTime: [String, Number],
+    minTime: [String, Number],
+    maxTime: [String, Number],
   },
   components: {
     Options,
@@ -68,7 +72,7 @@ export default {
       currentType: '',
       firstValue: '',
       secondValue: '',
-      isFocus: false,
+      isFocus: true,
       focusIndex: '',
     };
   },

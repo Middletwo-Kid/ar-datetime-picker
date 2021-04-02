@@ -1,11 +1,13 @@
 <template>
   <div class="ar-datetime-picker-year">
     <column v-if="(+index) === 0"
+            :key="index"
             :column="firstColumn"
             :value.sync="firstValue"
             @change="onChange"
      />
      <column v-if="(+index) === 1"
+            :key="index"
             :column="secondColumn"
             :value.sync="secondValue"
             @change="onChange"
