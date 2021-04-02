@@ -152,14 +152,10 @@ export default {
           this.currentIndex = index;
 
           if (emitChange) {
-<<<<<<< HEAD
             // const value = JSON.parse(JSON.stringify(this.value));
             // value[this.index] = this.columnList[index];
             this.$emit('update:value', this.columnList[index]);
             this.$emit('change', this.columnList[index]);
-=======
-            this.$emit('update:value', this.columnList[index]);
->>>>>>> 373240826da77fc817294da12710bf79149fb86b
           }
         }
       };
