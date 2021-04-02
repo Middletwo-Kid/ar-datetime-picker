@@ -102,12 +102,13 @@ export default {
   },
   methods: {
     onChangeType(value) {
+      if (value === this.type) return;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
       this.$emit('update:type', value);
-      this.firstValue = this.startTime;
-      this.secondValue = this.endTime;
+      this.firstValue = '';
+      this.secondValue = '';
     },
     onChangeFocus(index) {
       this.isFocus = true;
@@ -124,6 +125,9 @@ export default {
     onUnlimit() {
       this.isFocus = false;
       this.focusIndex = '';
+      this.$refs.options.reset();
+      this.firstValue = '';
+      this.secondValue = '';
       this.$emit('update:startTime', '');
       this.$emit('update:endTime', '');
       this.$emit('unlimit');
@@ -131,6 +135,7 @@ export default {
     onCancel() {
       this.isFocus = false;
       this.focusIndex = '';
+      this.$refs.options.reset();
       this.firstValue = this.startTime;
       this.secondValue = this.endTime;
       this.$emit('cancel');
