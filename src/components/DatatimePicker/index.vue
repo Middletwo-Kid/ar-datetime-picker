@@ -3,67 +3,42 @@
     <div class="ar-datatime-picker-header">
       <options :options="typeOptions"
                :value.sync="currentType"
-               @click="handleChangeType" />
-      <options :options="selectOptions"
-               :value.sync="currentSelect"
-               @click="handleChangeSelect" />
+               @click="onChangeType" />
+    </div>
+    <div class="ar-datatime-picker-select">
+      <select-time :startTime="firstValue"
+                   :endTime="secondValue"
+                   @change="onChangeFocus" />
     </div>
     <div class="ar-datatime-picker-body">
-      <!-- 年 -->
-      <div class="ar-datatime-picker-body__year"
-           v-if="currentType === 'year'">
-        <cell v-for="item in yearsArr"
-              :key="item"
-              :label="item"
-              :selectType="currentSelect"
-              :value.sync="currentYearValue"
-              @click="onChangeYear" />
-      </div>
-      <!-- 年月 -->
-      <div class="ar-datatime-picker-body__month"
-           v-if="currentType === 'month'">
-        <div class="ar-datatime-picker-column__wrapper"
-             v-if="currentSelect === 'single'"
-        >
-          <column type="year"
-                  :column="yearsArr"
-                  :value.sync="currentYearValue"
-                  :index=0 />
-          <column type="month"
-                  :value.sync="currentMonthValue"
-                  :index=0 />
-        </div>
-        <div class="ar-datatime-picker-column__wrapper"
-             v-if="currentSelect === 'range'"
-        >
-          <column type="year" />
-          <column type="month"/>
-          <div class="ar-datatime-picker-column__gap">至</div>
-          <column type="year" />
-          <column type="month"/>
-        </div>
-      </div>
-      <!-- 年月日 -->
-      <div class="ar-datatime-picker-body__day"
-           v-if="currentType === 'day'"
-      >年月日</div>
+      <select-year v-if="isFocus && currentType ==='year'"
+                   :startTime.sync="firstValue"
+                   :endTime.sync="secondValue"
+                   :index="focusIndex" />
+      <select-month v-if="isFocus && currentType ==='month'"
+                    :startTime.sync="firstValue"
+                    :endTime.sync="secondValue"
+                    :index="focusIndex" />
+      <select-day v-if="isFocus && currentType ==='day'"
+                  :startTime.sync="firstValue"
+                  :endTime.sync="secondValue"
+                  :index="focusIndex" />
     </div>
     <bottom @comfirm="onComfirm"
-            @unlimit="onUnlimit" />
+            @unlimit="onUnlimit"
+            @cancel="onCancel" />
   </div>
 </template>
 
 <script>
 import Options from './options.vue';
-import Cell from './cell.vue';
-import Column from './column.vue';
+import SelectTime from './time.vue';
+import SelectYear from './year.vue';
+import SelectMonth from './month.vue';
+import SelectDay from './day.vue';
 import Bottom from './footer.vue';
 import {
-  getAllYears,
-  getSelectOptions,
   getTypeOptions,
-  getStartYear,
-  getEndYear,
 } from './utils';
 
 export default {
@@ -73,129 +48,71 @@ export default {
       type: Array,
       default: () => getTypeOptions(),
     },
-    selectOptions: {
-      type: Array,
-      default: () => getSelectOptions(),
-    },
     type: {
       type: String,
       default: 'year',
     },
-    select: {
-      type: String,
-      default: 'single',
-    },
-    year: {
-      type: Array,
-      default: () => [new Date().getFullYear()],
-    },
-    month: {
-      type: Array,
-      default: () => [new Date().getMonth() + 1],
-    },
-    day: {
-      type: Array,
-      default: () => [new Date().getDate()],
-    },
-    startYear: {
-      type: [String, Number],
-      default: getStartYear(),
-    },
-    endYear: {
-      type: [String, Number],
-      default: getEndYear(),
-    },
+    startTime: [String, Number],
+    endTime: [String, Number],
   },
   components: {
     Options,
-    Cell,
-    Column,
+    SelectTime,
+    SelectYear,
+    SelectMonth,
+    SelectDay,
     Bottom,
   },
   data() {
     return {
-      currentType: 'year',
-      currentSelect: 'single',
-      currentYearValue: [],
-      currentMonthValue: [],
+      currentType: '',
+      firstValue: '',
+      secondValue: '',
+      isFocus: false,
+      focusIndex: '',
     };
-  },
-  computed: {
-    yearsArr() {
-      return getAllYears(this.startYear, this.endYear);
-    },
   },
   watch: {
     type: {
       immediate: true,
       handler(value) {
         this.currentType = value || 'year';
-        this.currentYearValue = [];
-        this.currentMonthValue = [];
       },
     },
-    select: {
+    startTime: {
       immediate: true,
-      handler(value) {
-        this.currentSelect = value || 'single';
-        this.currentYearValue = [];
-        this.currentMonthValue = [];
-      },
-    },
-    year: {
-      immediate: true,
-      deep: true,
       handler(newVal) {
-        this.currentYearValue = newVal;
+        this.firstValue = newVal;
       },
     },
-    month: {
+    endTime: {
       immediate: true,
-      deep: true,
       handler(newVal) {
-        this.currentMonthValue = newVal;
+        this.secondValue = newVal;
       },
     },
   },
   methods: {
-    handleChangeType(value) {
+    onChangeFocus(index) {
+      this.isFocus = true;
+      this.focusIndex = index;
+    },
+    onChangeType(value) {
       this.$emit('update:type', value);
     },
-    handleChangeSelect(value) {
-      this.$emit('update:select', value);
-    },
-    // 改变year
-    onChangeYear() {
-      this.$emit('change', this.currentYearValue);
-    },
-    onStartYear({ index, value }) {
-      const currentYearValue = JSON.parse(JSON.stringify(this.currentYearValue));
-      currentYearValue[index] = value;
-    },
-    // 确定
     onComfirm() {
-      const currentYearValue = this.currentYearValue ? this.currentYearValue : this.yearsArr[0];
-
-      if (this.currentType === 'year') {
-        this.$emit('update:year', currentYearValue);
-      } else if (this.currentType === 'month') {
-        if (this.currentYearValue.length < 2 && this.currentMonthValue < 2) return;
-        this.$emit('update:year', currentYearValue);
-        this.$emit('update:month', this.currentMonthValue || 1);
-      }
+      this.$emit('update:startTime', this.startTime);
+      this.$emit('update:endTime', this.endTime);
     },
-    // 不限
     onUnlimit() {
-      if (this.currentType === 'year') {
-        this.$emit('update:year', []);
-      } else if (this.currentType === 'month') {
-        this.$emit('update:year', []);
-        this.$emit('update:month', []);
-      } else {
-        this.$emit('update:year', []);
-        this.$emit('update:month', []);
-        this.$emit('update:day', []);
-      }
+      this.isFocus = false;
+      this.focusIndex = '';
+      this.$emit('update:startTime', '');
+      this.$emit('update:endTime', '');
+    },
+    onCancel() {
+      this.isFocus = false;
+      this.focusIndex = '';
     },
   },
 };
@@ -212,7 +129,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #F2F4F7;
     box-sizing: border-box;
   }
 
@@ -224,32 +140,6 @@ export default {
     overflow-y: scroll;
     &::-webkit-scrollbar{
       display: none;
-    }
-
-    &__year{
-      padding: 0 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-  }
-
-  &-column{
-    &__wrapper{
-      height: 33vh;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__gap{
-      height: 100%;
-      padding: 0 4px;
-      color: $ar-desc;
-      display: flex;
-      align-items: center;
-      box-sizing: border-box;
     }
   }
 }

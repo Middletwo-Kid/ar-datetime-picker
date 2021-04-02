@@ -28,28 +28,16 @@ const ITEMHEIGHT = 44;
 const COUNT = 5;
 const DEFAULT_DURATION = 200;
 const BASEOFFSET = (ITEMHEIGHT * (COUNT - 1)) / 2;
-const MONTHARR = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default {
   name: 'ArColumn',
   mixins: [ToucheMixins],
   props: {
-    type: {
-      type: String,
-      default: 'year',
-    },
     column: {
       type: Array,
       default: () => [],
     },
-    value: {
-      type: Array,
-      default: () => [],
-    },
-    index: {
-      type: Number,
-      default: 0,
-    },
+    value: [String, Number],
   },
   data() {
     return {
@@ -63,11 +51,7 @@ export default {
   },
   computed: {
     columnList() {
-      switch (this.type) {
-        case 'year': return this.column;
-        case 'month': return MONTHARR;
-        default: return this.column;
-      }
+      return this.column;
     },
     // 通过更改ul的样式达到改变高亮的位置(修改offset)
     mainStyle() {
@@ -102,7 +86,6 @@ export default {
     },
     handleTouchMove(event) {
       this.toucheMove(event);
-
       this.offset = range(this.startOffset + this.deltaY,
         -(this.columnList.length * ITEMHEIGHT), ITEMHEIGHT);
       if (this.direction === 'vertical') {
@@ -128,7 +111,6 @@ export default {
         this.momentum(distance, duration);
         return;
       }
-
       const index = this.getIndexByOffset(this.offset);
       this.duration = DEFAULT_DURATION;
       this.setIndex(index, true);
@@ -160,9 +142,10 @@ export default {
           this.currentIndex = index;
 
           if (emitChange) {
-            const value = JSON.parse(JSON.stringify(this.value));
-            value[this.index] = this.columnList[index];
-            this.$emit('update:value', value);
+            // const value = JSON.parse(JSON.stringify(this.value));
+            // value[this.index] = this.columnList[index];
+            this.$emit('update:value', this.columnList[index]);
+            this.$emit('change', this.columnList[index]);
           }
         }
       };
@@ -180,11 +163,9 @@ export default {
   },
   watch: {
     value: {
-      deep: true,
       immediate: true,
       handler(val) {
-        const column = this.type === 'year' ? this.column : MONTHARR;
-        let index = column.findIndex((item) => (+item) === (+val));
+        let index = this.column.findIndex((item) => (+item) === (+val));
         index = index > -1 ? index : 0;
         this.currentIndex = index;
         this.setIndex(index);
@@ -252,10 +233,13 @@ export default {
   &-body{
     height: 100%;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
   }
 
   &-main{
+    max-width: 100vh;
     transition-timing-function: cubic-bezier(0.23, 1, 0.68, 1);
   }
 

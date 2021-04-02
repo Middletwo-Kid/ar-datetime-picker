@@ -1,12 +1,9 @@
 <template>
   <div id="app">
     <datatime-picker
-      :startYear="startYear"
-      :endYear="endYear"
       :type.sync="type"
-      :select.sync="select"
-      :year.sync="year"
-      :month.sync="month" />
+      :startTime.sync="startTime"
+      :endTime.sync="endTime" />
   </div>
 </template>
 
@@ -20,22 +17,10 @@ export default {
   },
   data() {
     return {
-      startYear: '2018',
-      endYear: '2025',
-      year: [],
-      month: [],
-      type: 'month',
-      select: 'single',
+      startTime: '2014',
+      endTime: '2016',
+      type: '',
     };
-  },
-  watch: {
-    year: {
-      immediate: true,
-      deep: true,
-      handler(newVal) {
-        console.log(newVal);
-      },
-    },
   },
 };
 </script>
