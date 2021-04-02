@@ -140,7 +140,7 @@ export default {
     this.maxYear = this.maxTime
       ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
     this.maxMonth = this.maxTime
-      ? new Date(this.maxTime).getMonth() + 1 : 1;
+      ? new Date(this.maxTime).getMonth() + 1 : 12;
     this.minYear = this.minTime
       ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
     this.minMonth = this.minTime

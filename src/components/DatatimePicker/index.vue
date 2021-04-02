@@ -28,6 +28,8 @@
       <select-day v-if="isFocus && currentType ==='day'"
                   :startTime.sync="firstValue"
                   :endTime.sync="secondValue"
+                  :minTime="minTime"
+                  :maxTime="maxTime"
                   :index="focusIndex" />
     </div>
     <bottom @comfirm="onComfirm"
@@ -76,7 +78,7 @@ export default {
       currentType: '',
       firstValue: '',
       secondValue: '',
-      isFocus: false,
+      isFocus: true,
       focusIndex: '',
     };
   },
