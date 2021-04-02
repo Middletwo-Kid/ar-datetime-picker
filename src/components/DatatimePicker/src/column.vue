@@ -208,8 +208,10 @@ export default {
   flex: 1;
   height: 100%;
   box-sizing: border-box;
-  border-left: 1px solid #F2F4F7;
-  border-right: 1px solid #F2F4F7;
+  border-left: 1px solid $ar-border;
+  &:last-of-type{
+    border-right: 1px solid $ar-border;
+  }
 
   &-mask{
     position: absolute;
@@ -248,8 +250,8 @@ export default {
       right: -50%;
       bottom: -50%;
       left: -50%;
-      border-top: 1px solid #ebedf0;
-      border-bottom: 1px solid #ebedf0;
+      border-top: 1px solid $ar-border;
+      border-bottom: 1px solid $ar-border;
       transform: scale(0.5);
     }
   }

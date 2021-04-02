@@ -149,6 +149,12 @@ export default {
   display: flex;
   flex-direction: column;
   background: #fff;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 
   &-header{
     padding: 8px;
@@ -160,8 +166,7 @@ export default {
 
   &-body{
     height: 35vh;
-    margin-bottom: 8px;
-    padding: 8px 8px 0;
+    padding: 0 8px 0;
     box-sizing: border-box;
     overflow-y: scroll;
     &::-webkit-scrollbar{

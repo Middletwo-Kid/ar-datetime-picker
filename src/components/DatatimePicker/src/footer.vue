@@ -28,8 +28,8 @@ export default {
   height: 44px;
   display: flex;
   align-items: center;
-  border-top: 1px solid #F2F4F7;
-  border-bottom: 1px solid #F2F4F7;
+  border-top: 1px solid $ar-border;
+  border-bottom: 1px solid $ar-border;
 
   > .unlimited, .comfirm, .cancel {
     flex: 1;
@@ -42,7 +42,7 @@ export default {
 
   >.cancel{
     color: $ar-desc;
-    border-left: 1px solid #F2F4F7;
+    border-left: 1px solid $ar-border;
     &:active{
       background-color: rgba(242, 244, 247, 0.6);
     }
@@ -50,7 +50,7 @@ export default {
 
   >.unlimited{
     color: $ar-main;
-    border-left: 1px solid #F2F4F7;
+    border-left: 1px solid $ar-border;
     &:active{
       background-color: rgba(242, 244, 247, 0.6);
     }
@@ -59,6 +59,9 @@ export default {
   >.comfirm{
     color: #fff;
     background: $ar-primary;
+    &:active{
+      background: $ar-primary-active;
+    }
   }
 }
 </style>

@@ -67,13 +67,14 @@ export default {
     line-height: 32px;
     color: $ar-main;
     text-align: center;
-    transition: all 0.2s ease-in;
-    border-bottom: 1px solid #F2F4F7;
+    transition: all 0.1s ease-in;
+    border-bottom: 1px solid $ar-border;
     box-sizing: border-box;
+    user-select: none;
 
     &__active{
       color: $ar-primary;
-      border-bottom: 1px solid $ar-primary;
+      border-color: $ar-primary;
     }
   }
 
