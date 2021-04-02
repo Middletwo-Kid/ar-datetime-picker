@@ -31,6 +31,9 @@ export default {
       this.index = index;
       this.$emit('change', index);
     },
+    reset() {
+      this.index = '';
+    },
   },
   watch: {
     startTime: {
@@ -51,14 +54,17 @@ export default {
 
 <style lang="scss" scoped>
 .ar-datatime-picker-time{
-  margin: 32px 12px;
+  margin: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 
   &-select {
     width: 35%;
-    padding: 8px;
+    padding: 0 8px;
+    height: 32px;
+    line-height: 32px;
     color: $ar-main;
     text-align: center;
     transition: all 0.2s ease-in;
@@ -74,6 +80,7 @@ export default {
   &-gap{
     margin: 0 32px;
     color: $ar-desc;
+    box-sizing: border-box;
   }
 }
 

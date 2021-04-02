@@ -21,7 +21,7 @@ export default {
     return {
       startTime: '',
       endTime: '',
-      type: 'year',
+      type: 'month',
       maxTime: '2021/4/2',
       minTime: '2014/4/2',
     };

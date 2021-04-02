@@ -38,6 +38,7 @@ export default {
       default: () => [],
     },
     value: [String, Number],
+    index: [String, Number],
   },
   data() {
     return {
@@ -144,7 +145,10 @@ export default {
             // const value = JSON.parse(JSON.stringify(this.value));
             // value[this.index] = this.columnList[index];
             this.$emit('update:value', this.columnList[index]);
-            this.$emit('change', this.columnList[index]);
+            this.$emit('change', {
+              value: this.columnList[index],
+              index: this.index,
+            });
           }
         }
       };
@@ -173,7 +177,23 @@ export default {
         const currentVal = this.columnList[index];
         if (index === 0 && val !== currentVal) {
           this.$emit('update:value', currentVal);
-          this.$emit('change', currentVal);
+          this.$emit('change', {
+            value: currentVal,
+            index: this.index,
+          });
+        }
+      },
+    },
+    column: {
+      immediate: true,
+      deep: true,
+      handler(val, oldVal) {
+        if (val && oldVal && oldVal.length !== val.length) {
+          this.$emit('update:value', val[0]);
+          this.$emit('change', {
+            value: val[0],
+            index: this.index,
+          });
         }
       },
     },

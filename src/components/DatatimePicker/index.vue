@@ -6,7 +6,9 @@
                @click="onChangeType" />
     </div>
     <div class="ar-datatime-picker-select">
-      <select-time :startTime="firstValue"
+      <select-time ref="options"
+                   :key="currentType"
+                   :startTime="firstValue"
                    :endTime="secondValue"
                    @change="onChangeFocus" />
     </div>
@@ -20,6 +22,8 @@
       <select-month v-if="isFocus && currentType ==='month'"
                     :startTime.sync="firstValue"
                     :endTime.sync="secondValue"
+                    :minTime="minTime"
+                    :maxTime="maxTime"
                     :index="focusIndex" />
       <select-day v-if="isFocus && currentType ==='day'"
                   :startTime.sync="firstValue"
@@ -72,7 +76,7 @@ export default {
       currentType: '',
       firstValue: '',
       secondValue: '',
-      isFocus: true,
+      isFocus: false,
       focusIndex: '',
     };
   },
@@ -97,12 +101,17 @@ export default {
     },
   },
   methods: {
+    onChangeType(value) {
+      this.isFocus = false;
+      this.focusIndex = '';
+      this.$refs.options.reset();
+      this.$emit('update:type', value);
+      this.firstValue = this.startTime;
+      this.secondValue = this.endTime;
+    },
     onChangeFocus(index) {
       this.isFocus = true;
       this.focusIndex = index;
-    },
-    onChangeType(value) {
-      this.$emit('update:type', value);
     },
     onComfirm() {
       this.$emit('update:startTime', this.firstValue);

@@ -34,29 +34,22 @@ export default {
     return {
       firstValue: '',
       secondValue: '',
+      maxYear: '',
+      minYear: '',
     };
   },
   computed: {
     firstColumn() {
-      const maxYear = this.maxTime
-        ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
-      const minYear = this.minTime
-        ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
       const arr = [];
-
-      for (let i = minYear; i <= maxYear; i++) {
+      for (let i = this.minYear; i <= this.maxYear; i++) {
         arr.push(i);
       }
       return arr;
     },
     secondColumn() {
-      const maxYear = this.maxTime
-        ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
-      const minYear = this.minTime
-        ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
       const arr = [];
-      const start = this.firstValue ? this.firstValue : minYear;
-      for (let i = start; i <= maxYear; i++) {
+      const start = this.firstValue ? this.firstValue : this.minYear;
+      for (let i = start; i <= this.maxYear; i++) {
         arr.push(i);
       }
       return arr;
@@ -85,6 +78,12 @@ export default {
         this.secondValue = newVal;
       },
     },
+  },
+  created() {
+    this.maxYear = this.maxTime
+      ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
+    this.minYear = this.minTime
+      ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
   },
 };
 </script>
