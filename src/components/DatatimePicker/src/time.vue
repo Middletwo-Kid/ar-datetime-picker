@@ -40,13 +40,13 @@ export default {
     startTime: {
       immediate: true,
       handler(newVal) {
-        this.firstValue = this.type === 'month' ? newVal.slice(0, 6) : newVal;
+        this.firstValue = this.type === 'month' && newVal && newVal.length > 0 ? newVal.slice(0, 6) : newVal;
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        this.secondValue = this.type === 'month' ? newVal.slice(0, 6) : newVal;
+        this.secondValue = this.type === 'month' && newVal && newVal.length > 0 ? newVal.slice(0, 6) : newVal;
       },
     },
   },

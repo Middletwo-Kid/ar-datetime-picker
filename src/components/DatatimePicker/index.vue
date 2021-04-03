@@ -108,8 +108,8 @@ export default {
       this.focusIndex = '';
       this.$refs.options.reset();
       this.$emit('update:type', value);
-      this.firstValue = '';
-      this.secondValue = '';
+      this.firstValue = this.startTime ? this.startTime : '';
+      this.secondValue = this.endTime ? this.endTime : '';
     },
     onChangeFocus(index) {
       this.isFocus = true;
@@ -147,6 +147,7 @@ export default {
 
 <style lang="scss" scoped>
 .ar-datatime-picker{
+  width: 100%;
   display: flex;
   flex-direction: column;
   background: #fff;
