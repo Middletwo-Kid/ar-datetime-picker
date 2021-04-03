@@ -91,13 +91,29 @@ export default {
     startTime: {
       immediate: true,
       handler(newVal) {
-        this.firstValue = newVal;
+        if (newVal) {
+          switch (this.type) {
+            case 'year': this.firstValue = `${newVal}/1/1`; break;
+            case 'month': this.firstValue = `${newVal}/1`; break;
+            default: this.firstValue = newVal; break;
+          }
+        } else {
+          this.firstValue = '';
+        }
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        this.secondValue = newVal;
+        if (newVal) {
+          switch (this.type) {
+            case 'year': this.secondValue = `${newVal}/1/1`; break;
+            case 'month': this.secondValue = `${newVal}/1`; break;
+            default: this.secondValue = newVal; break;
+          }
+        } else {
+          this.secondValue = '';
+        }
       },
     },
   },
@@ -116,11 +132,28 @@ export default {
       this.focusIndex = index;
     },
     onComfirm() {
-      this.$emit('update:startTime', this.firstValue);
-      this.$emit('update:endTime', this.secondValue);
+      let firstValue = ''; let
+        secondValue = '';
+      switch (this.type) {
+        case 'year':
+          firstValue = this.firstValue.slice(0, 4);
+          secondValue = this.secondValue.slice(0, 4);
+          break;
+        case 'month':
+          firstValue = this.firstValue.slice(0, 6);
+          secondValue = this.secondValue.slice(0, 6);
+          break;
+        default:
+          firstValue = this.firstValue;
+          secondValue = this.secondValue;
+          break;
+      }
+
+      this.$emit('update:startTime', firstValue);
+      this.$emit('update:endTime', secondValue);
       this.$emit('confirm', {
-        startTime: this.firstValue,
-        endTime: this.secondValue,
+        startTime: firstValue,
+        endTime: secondValue,
       });
     },
     onUnlimit() {
