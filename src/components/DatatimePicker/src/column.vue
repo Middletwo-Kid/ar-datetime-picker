@@ -174,9 +174,6 @@ export default {
           index = index > -1 ? index : 0;
         }
 
-        this.currentIndex = index;
-        this.setIndex(index);
-
         // fix: 初始化值为空或者级联选择时初始化值的问题
         const currentVal = this.columnList[index];
         if (index === 0 && val !== currentVal) {
@@ -185,6 +182,9 @@ export default {
             value: currentVal,
             index: this.index,
           });
+        } else {
+          this.currentIndex = index;
+          this.setIndex(index);
         }
       },
     },
