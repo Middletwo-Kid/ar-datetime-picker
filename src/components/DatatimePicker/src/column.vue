@@ -142,6 +142,7 @@ export default {
           this.currentIndex = index;
 
           if (emitChange) {
+            console.log('setIndex', this.columnList[index], this.index);
             this.$emit('update:value', this.columnList[index]);
             this.$emit('change', {
               value: this.columnList[index],
@@ -166,8 +167,15 @@ export default {
     value: {
       immediate: true,
       handler(val) {
-        let index = this.column.findIndex((item) => (+item) === (+val));
-        index = index > -1 ? index : 0;
+        let index;
+        if (!val || val.length === 0) {
+          index = 0;
+        } else {
+          index = this.column.findIndex((item) => (+item) === (+val));
+          index = index > -1 ? index : 0;
+        }
+
+        console.log('watch', val, '-', index);
         this.currentIndex = index;
         this.setIndex(index);
 
@@ -187,6 +195,7 @@ export default {
       deep: true,
       handler(val, oldVal) {
         if (val && oldVal && oldVal.length !== val.length) {
+          console.log('column', val[0]);
           this.$emit('update:value', val[0]);
           this.$emit('change', {
             value: val[0],

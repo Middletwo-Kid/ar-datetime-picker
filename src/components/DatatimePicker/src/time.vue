@@ -18,6 +18,7 @@ export default {
   props: {
     startTime: [String, Number],
     endTime: [String, Number],
+    type: String,
   },
   data() {
     return {
@@ -39,13 +40,13 @@ export default {
     startTime: {
       immediate: true,
       handler(newVal) {
-        this.firstValue = newVal;
+        this.firstValue = this.type === 'month' ? newVal.slice(0, 6) : newVal;
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        this.secondValue = newVal;
+        this.secondValue = this.type === 'month' ? newVal.slice(0, 6) : newVal;
       },
     },
   },

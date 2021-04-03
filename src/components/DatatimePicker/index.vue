@@ -7,6 +7,7 @@
     </div>
     <div class="ar-datatime-picker-select">
       <select-time ref="options"
+                   :type="type"
                    :key="currentType"
                    :startTime="firstValue"
                    :endTime="secondValue"

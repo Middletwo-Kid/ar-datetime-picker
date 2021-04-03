@@ -100,11 +100,17 @@ export default {
   methods: {
     onChange({ index }) {
       if ((+index) === 0) {
-        this.$emit('update:startTime', `${this.firstYearValue}/${this.firstMonthValue}`);
+        if (!this.firstYearValue || !this.firstMonthValue
+        || Number.isNaN(this.firstYearValue)
+        || Number.isNaN(this.firstMonthValue)) return;
+        this.$emit('update:startTime', `${this.firstYearValue}/${this.firstMonthValue}/1`);
         if (this.secondYearValue) this.$emit('update:endTime', '');
       }
       if ((+index) === 1) {
-        this.$emit('update:endTime', `${this.secondYearValue}/${this.secondMonthValue}`);
+        if (!this.secondYearValue || !this.secondMonthValue
+        || Number.isNaN(this.secondYearValue)
+        || Number.isNaN(this.secondMonthValue)) return;
+        this.$emit('update:endTime', `${this.secondYearValue}/${this.secondMonthValue}/1`);
       }
     },
   },
