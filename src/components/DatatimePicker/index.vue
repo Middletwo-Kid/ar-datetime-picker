@@ -165,7 +165,7 @@ export default {
   }
 
   &-body{
-    height: 35vh;
+    height: 220px;
     padding: 0 8px 0;
     box-sizing: border-box;
     overflow-y: scroll;

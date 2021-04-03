@@ -2,12 +2,12 @@
   <div class="ar-datatime-picker-time">
     <div :class="['ar-datatime-picker-time-select',
                 index===0 ? 'ar-datatime-picker-time-select__active' : '']"
-         @click="handleFocus(0)"
+         @click.stop="handleFocus(0)"
     >{{firstValue}}</div>
     <div class="ar-datatime-picker-time-gap">至</div>
     <div :class="['ar-datatime-picker-time-select',
                 index===1 ? 'ar-datatime-picker-time-select__active' : '']"
-          @click="handleFocus(1)"
+          @click.stop="handleFocus(1)"
     >{{secondValue}}</div>
   </div>
 </template>
