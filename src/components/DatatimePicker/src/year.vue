@@ -64,6 +64,7 @@ export default {
         if (!this.firstValue
         || Number.isNaN(this.firstValue)) return;
         this.$emit('update:startTime', `${this.firstValue}/1/1`);
+        if (this.secondValue) this.$emit('update:endTime', '');
       }
       if ((+index) === 1) {
         if (!this.secondValue
@@ -71,8 +72,6 @@ export default {
         this.$emit('update:endTime', `${this.secondValue}/1/1`);
       }
 
-      // this.$emit('update:startTime', `${this.firstValue}/1/1`);
-      // this.$emit('update:endTime', this.secondValue);
       // this.$emit('change', {
       //   startTime: `${this.firstValue}/1/1`,
       //   endTime: this.secondValue,

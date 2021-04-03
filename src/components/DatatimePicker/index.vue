@@ -120,10 +120,15 @@ export default {
   methods: {
     onChangeType(value) {
       if (value === this.type) return;
+      // let oldValue = this.type;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
       this.$emit('update:type', value);
+      // 如果是从日切换到月或者年，可以随便切换
+      // 如果是从月切换到年，可以随便切换，但是如果是切换到日，需要增加日
+      // 如果是从年切换到月，需要增加月份和日期，如果切换到日，需要增加月份和日期
+
       this.firstValue = this.startTime ? this.startTime : '';
       this.secondValue = this.endTime ? this.endTime : '';
     },
@@ -132,8 +137,9 @@ export default {
       this.focusIndex = index;
     },
     onComfirm() {
-      let firstValue = ''; let
-        secondValue = '';
+      if (!this.firstValue || !this.secondValue) return;
+      let firstValue = '';
+      let secondValue = '';
       switch (this.type) {
         case 'year':
           firstValue = this.firstValue.slice(0, 4);
