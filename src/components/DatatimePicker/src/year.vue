@@ -4,40 +4,29 @@
             :key="index"
             :index=0
             :column="firstColumn"
-            :value.sync="firstValue"
+            :value.sync="firstYearValue"
             @change="onChange"
      />
      <column v-if="(+index) === 1"
             :key="index"
             :index=1
             :column="secondColumn"
-            :value.sync="secondValue"
+            :value.sync="secondYearValue"
             @change="onChange"
      />
   </div>
 </template>
 
 <script>
-import Column from './column.vue';
+import SelectMixins from '../mixins/select';
 
 export default {
   name: 'ArDatatimePickerYear',
-  components: {
-    Column,
-  },
-  props: {
-    maxTime: [String, Number],
-    minTime: [String, Number],
-    startTime: [String, Number],
-    endTime: [String, Number],
-    index: [String, Number],
-  },
+  mixins: [SelectMixins],
   data() {
     return {
-      firstValue: '',
-      secondValue: '',
-      maxYear: '',
-      minYear: '',
+      firstYearValue: '',
+      secondYearValue: '',
     };
   },
   computed: {
@@ -49,9 +38,9 @@ export default {
       return arr;
     },
     secondColumn() {
-      if (Number.isNaN(this.firstValue)) return [];
+      if (Number.isNaN(this.firstYearValue)) return [];
       const arr = [];
-      const start = this.firstValue ? this.firstValue : this.minYear;
+      const start = this.firstYearValue ? this.firstYearValue : this.minYear;
       for (let i = start; i <= this.maxYear; i++) {
         arr.push(i);
       }
@@ -61,20 +50,20 @@ export default {
   methods: {
     onChange({ index }) {
       if ((+index) === 0) {
-        if (!this.firstValue
-        || Number.isNaN(this.firstValue)) return;
-        this.$emit('update:startTime', `${this.firstValue}/1/1`);
-        if (this.secondValue) this.$emit('update:endTime', '');
+        if (!this.firstYearValue
+        || Number.isNaN(this.firstYearValue)) return;
+        this.$emit('update:startTime', `${this.firstYearValue}/1/1`);
+        if (this.secondYearValue) this.$emit('update:endTime', '');
       }
       if ((+index) === 1) {
-        if (!this.secondValue
-        || Number.isNaN(this.secondValue)) return;
-        this.$emit('update:endTime', `${this.secondValue}/1/1`);
+        if (!this.secondYearValue
+        || Number.isNaN(this.secondYearValue)) return;
+        this.$emit('update:endTime', `${this.secondYearValue}/1/1`);
       }
 
       // this.$emit('change', {
-      //   startTime: `${this.firstValue}/1/1`,
-      //   endTime: this.secondValue,
+      //   startTime: `${this.firstYearValue}/1/1`,
+      //   endTime: this.secondYearValue,
       // });
     },
   },
@@ -84,9 +73,9 @@ export default {
       handler(newVal) {
         if (newVal) {
           const day = new Date(newVal);
-          this.firstValue = day.getFullYear();
+          this.firstYearValue = day.getFullYear();
         } else {
-          this.firstValue = '';
+          this.firstYearValue = '';
         }
       },
     },
@@ -95,18 +84,12 @@ export default {
       handler(newVal) {
         if (newVal) {
           const day = new Date(newVal);
-          this.secondValue = day.getFullYear();
+          this.secondYearValue = day.getFullYear();
         } else {
-          this.secondValue = '';
+          this.secondYearValue = '';
         }
       },
     },
-  },
-  created() {
-    this.maxYear = this.maxTime
-      ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
-    this.minYear = this.minTime
-      ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
   },
 };
 </script>

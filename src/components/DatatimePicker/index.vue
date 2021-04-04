@@ -14,24 +14,19 @@
                    @change="onChangeFocus" />
     </div>
     <div class="ar-datatime-picker-body">
-      <select-year v-if="isFocus && currentType ==='year'"
-                   :startTime.sync="firstValue"
-                   :endTime.sync="secondValue"
-                   :minTime="minTime"
-                   :maxTime="maxTime"
-                   :index="focusIndex" />
-      <select-month v-if="isFocus && currentType ==='month'"
-                    :startTime.sync="firstValue"
-                    :endTime.sync="secondValue"
-                    :minTime="minTime"
-                    :maxTime="maxTime"
-                    :index="focusIndex" />
-      <select-day v-if="isFocus && currentType ==='day'"
-                  :startTime.sync="firstValue"
-                  :endTime.sync="secondValue"
-                  :minTime="minTime"
-                  :maxTime="maxTime"
-                  :index="focusIndex" />
+      <component :is="'select-' + currentType"
+                 v-if="isFocus"
+                 :startTime.sync="firstValue"
+                 :endTime.sync="secondValue"
+                 :minTime="minTime"
+                 :maxTime="maxTime"
+                 :index="focusIndex"
+                 :maxYear="maxYear"
+                 :minYear="minYear"
+                 :maxMonth="maxMonth"
+                 :minMonth="minMonth"
+                 :maxDay="maxDay"
+                 :minDay="minDay" />
     </div>
     <bottom @comfirm="onComfirm"
             @unlimit="onUnlimit"

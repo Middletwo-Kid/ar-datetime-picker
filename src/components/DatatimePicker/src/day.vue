@@ -48,20 +48,11 @@
 </template>
 
 <script>
-import Column from './column.vue';
+import SelectMixins from '../mixins/select';
 
 export default {
   name: 'ArDatatimePickerday',
-  components: {
-    Column,
-  },
-  props: {
-    maxTime: [String, Number],
-    minTime: [String, Number],
-    startTime: [String, Number],
-    endTime: [String, Number],
-    index: [String, Number],
-  },
+  mixins: [SelectMixins],
   data() {
     return {
       firstYearValue: '',
@@ -70,12 +61,6 @@ export default {
       secondYearValue: '',
       secondMonthValue: '',
       secondDayValue: '',
-      maxYear: '',
-      minYear: '',
-      maxMonth: '',
-      minMonth: '',
-      maxDay: '',
-      minDay: '',
     };
   },
   computed: {
@@ -181,20 +166,6 @@ export default {
         }
       },
     },
-  },
-  created() {
-    this.maxYear = this.maxTime
-      ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
-    this.maxMonth = this.maxTime
-      ? new Date(this.maxTime).getMonth() + 1 : 12;
-    this.maxDay = this.maxTime
-      ? new Date(this.maxTime).getDate() : new Date(this.maxYear, this.maxMonth, 0).getDate();
-    this.minYear = this.minTime
-      ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
-    this.minMonth = this.minTime
-      ? new Date(this.minTime).getMonth() + 1 : 1;
-    this.minDay = this.minTime
-      ? new Date(this.minTime).getDate() : 1;
   },
 };
 </script>
