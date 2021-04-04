@@ -196,14 +196,16 @@ export default {
       }
 
       if (oldValue === 'month' && value === 'day') {
-        if (startYear === this.minYear && startMonth === this.minMonth) {
-          this.firstValue = `${startYear}/${startMonth}/${this.minDay}`;
+        console.log(oldValue, value, this.startTime,
+          startYear, this.minYear, startMonth, this.minMonth);
+        if (startYear === this.minYear && startMonth <= this.minMonth) {
+          this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
         } else {
           this.firstValue = `${startYear}/${startMonth}/1`;
         }
 
-        if (endYear === this.minYear && endMonth === this.minMonth) {
-          this.secondValue = `${endYear}/${endMonth}/${this.minDay}`;
+        if (endYear === this.minYear && endMonth <= this.minMonth) {
+          this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
         } else {
           this.secondValue = `${endYear}/${endMonth}/1`;
         }
