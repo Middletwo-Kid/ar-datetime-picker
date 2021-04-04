@@ -79,6 +79,12 @@ export default {
       secondValue: '',
       isFocus: false,
       focusIndex: '',
+      maxYear: '',
+      minYear: '',
+      maxMonth: '',
+      minMonth: '',
+      maxDay: '',
+      minDay: '',
     };
   },
   watch: {
@@ -95,7 +101,26 @@ export default {
           switch (this.type) {
             case 'year': this.firstValue = `${newVal}/1/1`; break;
             case 'month': this.firstValue = `${newVal}/1`; break;
-            default: this.firstValue = newVal; break;
+            default: {
+              if (!newVal) this.firstValue = newVal;
+              else {
+                const arr = newVal.split('/');
+                if (arr.length === 3) {
+                  this.firstValue = newVal;
+                } else if (arr.length === 2) {
+                  const year = arr[0];
+                  const month = arr[1];
+                  if (year === this.minYear && month === this.minMonth) {
+                    this.firstValue = `${newVal}/${this.minDay}`;
+                  } else {
+                    this.firstValue = `${newVal}/1`;
+                  }
+                } else {
+                  this.firstValue = `${newVal}/${this.minMonth}/${this.minDay}`;
+                }
+              }
+              break;
+            }
           }
         } else {
           this.firstValue = '';
@@ -120,7 +145,7 @@ export default {
   methods: {
     onChangeType(value) {
       if (value === this.type) return;
-      // let oldValue = this.type;
+      const oldValue = this.type;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
@@ -128,9 +153,66 @@ export default {
       // 如果是从日切换到月或者年，可以随便切换
       // 如果是从月切换到年，可以随便切换，但是如果是切换到日，需要增加日
       // 如果是从年切换到月，需要增加月份和日期，如果切换到日，需要增加月份和日期
+      if (this.startTime.length === 0) {
+        this.firstValue = '';
+        this.secondValue = '';
+        return;
+      }
 
-      this.firstValue = this.startTime ? this.startTime : '';
-      this.secondValue = this.endTime ? this.endTime : '';
+      const startTime = new Date(this.startTime);
+      const endTime = new Date(this.endTime);
+      const startYear = startTime.getFullYear();
+      const startMonth = startTime.getMonth() + 1;
+      // const startDay = startTime.getDate();
+      const endYear = endTime.getFullYear();
+      const endMonth = endTime.getMonth() + 1;
+      // const endDay = endTime.getDate();
+
+      // 如果从年开始切换
+      if (oldValue === 'year') {
+        // 切换到月时，需要更新月与日
+        if (value === 'month') {
+          if (startYear === this.minYear) {
+            this.firstValue = `${startYear}/${this.minMonth}/${this.minMonth}`;
+          } else {
+            this.firstValue = `${startYear}/1/1`;
+          }
+
+          if (endYear === this.minYear) {
+            this.secondValue = `${endYear}/${this.minMonth}/${this.minMonth}`;
+          } else {
+            this.secondValue = `${endYear}/1/1`;
+          }
+        }
+
+        if (value === 'day') {
+          if (startYear === this.minYear && startMonth <= this.minMonth) {
+            this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
+          } else {
+            this.firstValue = `${startYear}/${startMonth}/1`;
+          }
+
+          if (endYear === this.minYear && endMonth <= this.minMonth) {
+            this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
+          } else {
+            this.secondValue = `${endYear}/${endMonth}/1`;
+          }
+        }
+      }
+
+      if (oldValue === 'month' && value === 'day') {
+        if (startYear === this.minYear && startMonth === this.minMonth) {
+          this.firstValue = `${startYear}/${startMonth}/${this.minDay}`;
+        } else {
+          this.firstValue = `${startYear}/${startMonth}/1`;
+        }
+
+        if (endYear === this.minYear && endMonth === this.minMonth) {
+          this.secondValue = `${endYear}/${endMonth}/${this.minDay}`;
+        } else {
+          this.secondValue = `${endYear}/${endMonth}/1`;
+        }
+      }
     },
     onChangeFocus(index) {
       this.isFocus = true;
@@ -180,6 +262,20 @@ export default {
       this.secondValue = this.endTime;
       this.$emit('cancel');
     },
+  },
+  created() {
+    this.maxYear = this.maxTime
+      ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
+    this.maxMonth = this.maxTime
+      ? new Date(this.maxTime).getMonth() + 1 : 12;
+    this.maxDay = this.maxTime
+      ? new Date(this.maxTime).getDate() : new Date(this.maxYear, this.maxMonth, 0).getDate();
+    this.minYear = this.minTime
+      ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
+    this.minMonth = this.minTime
+      ? new Date(this.minTime).getMonth() + 1 : 1;
+    this.minDay = this.minTime
+      ? new Date(this.minTime).getDate() : 1;
   },
 };
 </script>
