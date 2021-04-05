@@ -2,9 +2,8 @@
   <div id="app">
     <p class="datetime-desc">选择的时间： {{startTime}} 至 {{endTime}}</p>
     <button class="datetime-button" @click="handleClick">选择时间</button>
-    <!-- <action-sheet v-if="show">
+    <action-sheet v-model="show">
       <datatime-picker
-        v-if="show"
         unlimitVal="all"
         :startTime.sync="startTime"
         :endTime.sync="endTime"
@@ -13,29 +12,19 @@
         @confirm="onConfirm"
         @cancel="onCancel"
         @unlimit="onUnlimit" />
-    </action-sheet> -->
-    <datatime-picker
-        v-if="show"
-        unlimitVal="all"
-        :startTime.sync="startTime"
-        :endTime.sync="endTime"
-        :minTime="minTime"
-        :maxTime="maxTime"
-        @confirm="onConfirm"
-        @cancel="onCancel"
-        @unlimit="onUnlimit" />
+    </action-sheet>
   </div>
 </template>
 
 <script>
 import DatatimePicker from './components/DatatimePicker/index.vue';
-// import ActionSheet from './components/ActionSheet/index.vue';
+import ActionSheet from './components/ActionSheet/index.vue';
 
 export default {
   name: 'App',
   components: {
     DatatimePicker,
-    // ActionSheet,
+    ActionSheet,
   },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
-  <div class="ar-action-sheet">
-    <div class="ar-action-sheet-mask" />
+  <div class="ar-action-sheet" v-if="show">
+    <div class="ar-action-sheet-mask" @click.self="handleHidden" />
     <div class="ar-action-sheet-main">
       <slot />
     </div>
@@ -10,6 +10,24 @@
 <script>
 export default {
   name: 'ArActionSheet',
+  props: {
+    value: Boolean,
+  },
+  data() {
+    return {
+      show: false,
+    };
+  },
+  methods: {
+    handleHidden() {
+      this.$emit('input', false);
+    },
+  },
+  watch: {
+    value(val) {
+      this.show = val;
+    },
+  },
 };
 </script>
 
