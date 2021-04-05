@@ -24,6 +24,7 @@ export default {
   },
   methods: {
     handleClick(item) {
+      if (item.value === this.value) return;
       this.$emit('update:value', item.value);
       this.$emit('click', item.value);
     },

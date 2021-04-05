@@ -7,7 +7,7 @@
     </div>
     <div class="ar-datatime-picker-select">
       <select-time ref="options"
-                   :type="type"
+                   :type="currentType"
                    :key="currentType"
                    :startTime="firstValue"
                    :endTime="secondValue"
@@ -50,10 +50,7 @@ export default {
       type: Array,
       default: () => getTypeOptions(),
     },
-    type: {
-      type: String,
-      default: 'year',
-    },
+    type: String,
     startTime: [String, Number],
     endTime: [String, Number],
     minTime: [String, Number],
@@ -86,7 +83,9 @@ export default {
     type: {
       immediate: true,
       handler(value) {
-        this.currentType = value || 'year';
+        const defalutOptions = this.typeOptions ? this.typeOptions : getTypeOptions();
+        const defaultType = this.type ? this.type : defalutOptions[0].value;
+        this.currentType = value || defaultType;
       },
     },
     startTime: {
@@ -139,10 +138,12 @@ export default {
   },
   methods: {
     onChangeType(value) {
+      console.log(value, this.currentType, this.type);
       if (value === this.type) return;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
+      this.currentType = value;
       this.$emit('update:type', value);
       if (this.startTime.length === 0) {
         this.firstValue = '';
@@ -175,7 +176,7 @@ export default {
       if (!this.firstValue || !this.secondValue) return;
       let firstValue = '';
       let secondValue = '';
-      switch (this.type) {
+      switch (this.currentType) {
         case 'year':
           firstValue = this.firstValue.slice(0, 4);
           secondValue = this.secondValue.slice(0, 4);
