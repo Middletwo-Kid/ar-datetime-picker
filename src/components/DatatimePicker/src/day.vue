@@ -127,11 +127,18 @@ export default {
   methods: {
     onChange({ index }) {
       if ((+index) === 0) {
-        this.$emit('update:startTime', `${this.firstYearValue}/${this.firstMonthValue}/${this.firstDayValue}`);
-        if (this.secondYearValue) this.$emit('update:endTime', '');
+        const val = `${this.firstYearValue}/${this.firstMonthValue}/${this.firstDayValue}`;
+        this.$emit('update:startTime', val);
+        this.$emit('changeStartTime', val);
+        if (this.secondYearValue) {
+          this.$emit('update:endTime', '');
+          this.$emit('changeEndTime', '');
+        }
       }
       if ((+index) === 1) {
-        this.$emit('update:endTime', `${this.secondYearValue}/${this.secondMonthValue}/${this.secondDayValue}`);
+        const val = `${this.secondYearValue}/${this.secondMonthValue}/${this.secondDayValue}`;
+        this.$emit('update:endTime', val);
+        this.$emit('changeEndTime', val);
       }
     },
   },

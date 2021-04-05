@@ -4,7 +4,7 @@
     <button class="datetime-button" @click="handleClick">选择时间</button>
     <datatime-picker
       v-if="show"
-      :typeOptions="typeOptions"
+      unlimitVal="all"
       :startTime.sync="startTime"
       :endTime.sync="endTime"
       :minTime="minTime"
@@ -31,10 +31,6 @@ export default {
       maxTime: '2022/4/2',
       minTime: '2014/4/2',
       show: false,
-      typeOptions: [{
-        name: '日',
-        value: 'day',
-      }],
     };
   },
   methods: {

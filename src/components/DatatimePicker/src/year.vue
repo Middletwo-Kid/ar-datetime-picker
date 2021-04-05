@@ -52,19 +52,21 @@ export default {
       if ((+index) === 0) {
         if (!this.firstYearValue
         || Number.isNaN(this.firstYearValue)) return;
-        this.$emit('update:startTime', `${this.firstYearValue}/1/1`);
-        if (this.secondYearValue) this.$emit('update:endTime', '');
+        const val = `${this.firstYearValue}/1/1`;
+        this.$emit('update:startTime', val);
+        this.$emit('changeStartTime', val);
+        if (this.secondYearValue) {
+          this.$emit('update:endTime', '');
+          this.$emit('changeEndTime', '');
+        }
       }
       if ((+index) === 1) {
         if (!this.secondYearValue
         || Number.isNaN(this.secondYearValue)) return;
-        this.$emit('update:endTime', `${this.secondYearValue}/1/1`);
+        const val = `${this.secondYearValue}/1/1`;
+        this.$emit('update:endTime', val);
+        this.$emit('changeEndTime', val);
       }
-
-      // this.$emit('change', {
-      //   startTime: `${this.firstYearValue}/1/1`,
-      //   endTime: this.secondYearValue,
-      // });
     },
   },
   watch: {

@@ -26,7 +26,9 @@
                  :maxMonth="maxMonth"
                  :minMonth="minMonth"
                  :maxDay="maxDay"
-                 :minDay="minDay" />
+                 :minDay="minDay"
+                 @changeStartTime="onChangeStartTime"
+                 @changeEndTime="onChangeEndTime" />
     </div>
     <bottom @comfirm="onComfirm"
             @unlimit="onUnlimit"
@@ -55,6 +57,7 @@ export default {
     endTime: [String, Number],
     minTime: [String, Number],
     maxTime: [String, Number],
+    unlimitVal: String,
   },
   components: {
     Options,
@@ -92,6 +95,10 @@ export default {
       immediate: true,
       handler(newVal) {
         if (newVal) {
+          if (newVal === this.unlimitVal) {
+            this.firstValue = '';
+            return;
+          }
           switch (this.type) {
             case 'year': this.firstValue = `${newVal}/1/1`; break;
             case 'month': this.firstValue = `${newVal}/1`; break;
@@ -124,6 +131,10 @@ export default {
     endTime: {
       immediate: true,
       handler(newVal) {
+        if (newVal === this.unlimitVal) {
+          this.secondValue = '';
+          return;
+        }
         if (newVal) {
           switch (this.type) {
             case 'year': this.secondValue = `${newVal}/1/1`; break;
@@ -138,14 +149,15 @@ export default {
   },
   methods: {
     onChangeType(value) {
-      console.log(value, this.currentType, this.type);
       if (value === this.type) return;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
       this.currentType = value;
       this.$emit('update:type', value);
-      if (this.startTime.length === 0) {
+      this.$emit('changeType', value);
+      if ((this.startTime && this.startTime.length === 0)
+      || this.startTime === this.unlimitVal) {
         this.firstValue = '';
         this.secondValue = '';
         return;
@@ -172,8 +184,18 @@ export default {
       this.isFocus = true;
       this.focusIndex = index;
     },
+    onChangeStartTime(val) {
+      const value = this.getResult(val);
+      this.$emit('changeStartTime', value);
+    },
+    onChangeEndTime(val) {
+      const value = this.getResult(val);
+      this.$emit('changeEndTime', value);
+    },
     onComfirm() {
-      if (!this.firstValue || !this.secondValue) return;
+      if (!this.firstValue || !this.secondValue
+      || this.firstValue === this.unlimitVal
+      || this.secondValue === this.unlimitVal) return;
       let firstValue = '';
       let secondValue = '';
       switch (this.currentType) {
@@ -204,8 +226,8 @@ export default {
       this.$refs.options.reset();
       this.firstValue = '';
       this.secondValue = '';
-      this.$emit('update:startTime', '');
-      this.$emit('update:endTime', '');
+      this.$emit('update:startTime', this.unlimitVal);
+      this.$emit('update:endTime', this.unlimitVal);
       this.$emit('unlimit');
     },
     onCancel() {
@@ -215,6 +237,17 @@ export default {
       this.firstValue = this.startTime;
       this.secondValue = this.endTime;
       this.$emit('cancel');
+    },
+    getResult(val) {
+      let value;
+      if (val.length > 0) {
+        switch (this.currentType) {
+          case 'year': value = val.slice(0, 4); break;
+          case 'month': value = val.slice(0, 6); break;
+          default: value = val; break;
+        }
+      }
+      return value;
     },
   },
   created() {
