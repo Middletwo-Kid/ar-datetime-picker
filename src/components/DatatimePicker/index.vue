@@ -140,14 +140,10 @@ export default {
   methods: {
     onChangeType(value) {
       if (value === this.type) return;
-      const oldValue = this.type;
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
       this.$emit('update:type', value);
-      // 如果是从日切换到月或者年，可以随便切换
-      // 如果是从月切换到年，可以随便切换，但是如果是切换到日，需要增加日
-      // 如果是从年切换到月，需要增加月份和日期，如果切换到日，需要增加月份和日期
       if (this.startTime.length === 0) {
         this.firstValue = '';
         this.secondValue = '';
@@ -158,57 +154,17 @@ export default {
       const endTime = new Date(this.endTime);
       const startYear = startTime.getFullYear();
       const startMonth = startTime.getMonth() + 1;
-      // const startDay = startTime.getDate();
       const endYear = endTime.getFullYear();
       const endMonth = endTime.getMonth() + 1;
-      // const endDay = endTime.getDate();
 
-      // 如果从年开始切换
-      if (oldValue === 'year') {
-        // 切换到月时，需要更新月与日
-        if (value === 'month') {
-          if (startYear === this.minYear) {
-            this.firstValue = `${startYear}/${this.minMonth}/${this.minMonth}`;
-          } else {
-            this.firstValue = `${startYear}/1/1`;
-          }
-
-          if (endYear === this.minYear) {
-            this.secondValue = `${endYear}/${this.minMonth}/${this.minMonth}`;
-          } else {
-            this.secondValue = `${endYear}/1/1`;
-          }
-        }
-
-        if (value === 'day') {
-          if (startYear === this.minYear && startMonth <= this.minMonth) {
-            this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
-          } else {
-            this.firstValue = `${startYear}/${startMonth}/1`;
-          }
-
-          if (endYear === this.minYear && endMonth <= this.minMonth) {
-            this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
-          } else {
-            this.secondValue = `${endYear}/${endMonth}/1`;
-          }
-        }
+      if ((value === 'month' && startYear === this.minYear)
+          || (value === 'day' && startYear === this.minYear && startMonth <= this.minMonth)) {
+        this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
       }
 
-      if (oldValue === 'month' && value === 'day') {
-        console.log(oldValue, value, this.startTime,
-          startYear, this.minYear, startMonth, this.minMonth);
-        if (startYear === this.minYear && startMonth <= this.minMonth) {
-          this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
-        } else {
-          this.firstValue = `${startYear}/${startMonth}/1`;
-        }
-
-        if (endYear === this.minYear && endMonth <= this.minMonth) {
-          this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
-        } else {
-          this.secondValue = `${endYear}/${endMonth}/1`;
-        }
+      if ((value === 'month' && endYear === this.minYear)
+          || (value === 'day' && endYear === this.minYear && endMonth <= this.minMonth)) {
+        this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
       }
     },
     onChangeFocus(index) {
