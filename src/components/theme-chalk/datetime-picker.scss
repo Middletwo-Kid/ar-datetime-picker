@@ -1,0 +1,225 @@
+@import './common/var.scss';
+
+.ar-datetime-picker{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+
+  &-header{
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  &-body{
+    height: 220px;
+    padding: 0 8px 0;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
+
+  &-options{
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid $ar-primary;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+  
+    &-item{
+      padding: 0 16px;
+      line-height: 30px;
+      font-size: 14px;
+      color: $ar-primary;
+      border-right: 1px solid $ar-primary;
+      transition: all 0.2s ease-in;
+  
+      &:last-of-type{
+        border-right: none;
+      }
+  
+      &__active{
+        color: #fff;
+        background: $ar-primary;
+      }
+    }
+  }
+
+  &-time{
+    margin: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  
+    &-select {
+      width: 35%;
+      padding: 0 8px;
+      height: 32px;
+      line-height: 32px;
+      color: $ar-main;
+      text-align: center;
+      transition: all 0.1s ease-in;
+      border-bottom: 1px solid $ar-border;
+      box-sizing: border-box;
+      user-select: none;
+  
+      &__active{
+        color: $ar-primary;
+        border-color: $ar-primary;
+      }
+    }
+  
+    &-gap{
+      margin: 0 32px;
+      color: $ar-desc;
+      box-sizing: border-box;
+    }
+  }
+
+  &-year{
+    height: 100%;
+  }
+
+  &-month{
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &-day{
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &-column{
+    position: relative;
+    flex: 1;
+    height: 100%;
+    box-sizing: border-box;
+    border-left: 1px solid $ar-border;
+    &:last-of-type{
+      border-right: 1px solid $ar-border;
+    }
+  
+    &-mask{
+      position: absolute;
+      top:0;
+      bottom: 0;
+      right: 0;
+      left:0;
+      z-index: 2;
+      background-size: 100% 45%;
+      background-image: linear-gradient(
+          180deg,
+          hsla(0, 0%, 100%, 0.9),
+          hsla(0, 0%, 100%, 0.4)
+        ),
+        linear-gradient(0deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4));
+      background-repeat: no-repeat;
+      background-position: top, bottom;
+      backface-visibility: hidden;
+      pointer-events: none;
+    }
+  
+    &-frame{
+      position: absolute;
+      top: 50%;
+      right: 4px;
+      left: 4px;
+      z-index: 3;
+      height: 44px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      &::after{
+        content: '';
+        position: absolute;
+        box-sizing: border-box;
+        top: -50%;
+        right: -50%;
+        bottom: -50%;
+        left: -50%;
+        border-top: 1px solid $ar-border;
+        border-bottom: 1px solid $ar-border;
+        transform: scale(0.5);
+      }
+    }
+  
+    &-body{
+      height: 100%;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  
+    &-main{
+      max-width: 100vh;
+      transition-timing-function: cubic-bezier(0.23, 1, 0.68, 1);
+    }
+  
+    &-item{
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      box-sizing: border-box;
+    }
+  }
+
+  &-footer{
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid $ar-border;
+    border-bottom: 1px solid $ar-border;
+  
+    > .unlimited, .comfirm, .cancel {
+      flex: 1;
+      font-size: 14px;
+      line-height: 44px;
+      text-align: center;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+  
+    >.cancel{
+      color: $ar-desc;
+      border-left: 1px solid $ar-border;
+      &:active{
+        background-color: rgba(242, 244, 247, 0.6);
+      }
+    }
+  
+    >.unlimited{
+      color: $ar-main;
+      border-left: 1px solid $ar-border;
+      &:active{
+        background-color: rgba(242, 244, 247, 0.6);
+      }
+    }
+  
+    >.comfirm{
+      color: #fff;
+      background: $ar-primary;
+      &:active{
+        background: $ar-primary-active;
+      }
+    }
+  }
+}

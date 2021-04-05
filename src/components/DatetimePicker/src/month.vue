@@ -1,5 +1,5 @@
 <template>
-  <div class="ar-datetime-picker-day">
+  <div class="ar-datetime-picker-month">
     <!-- From -->
     <column v-if="(+index) === 0"
             :column="firstYearColumn"
@@ -13,13 +13,6 @@
             :value.sync="firstMonthValue"
             :index=0
             key="firstMonth"
-            @change="onChange"
-     />
-     <column v-if="(+index) === 0"
-            :column="firstDayColumn"
-            :value.sync="firstDayValue"
-            :index=0
-            key="firstDay"
             @change="onChange"
      />
      <!-- To -->
@@ -37,13 +30,6 @@
             key="secondMonth"
             @change="onChange"
      />
-     <column v-if="(+index) === 1"
-            :column="secondDayColumn"
-            :value.sync="secondDayValue"
-            :index=1
-            key="secondDay"
-            @change="onChange"
-     />
   </div>
 </template>
 
@@ -51,16 +37,14 @@
 import SelectMixins from '../mixins/select';
 
 export default {
-  name: 'ArDatatimePickerday',
+  name: 'ArDatetimePickerMonth',
   mixins: [SelectMixins],
   data() {
     return {
       firstYearValue: '',
       firstMonthValue: '',
-      firstDayValue: '',
       secondYearValue: '',
       secondMonthValue: '',
-      secondDayValue: '',
     };
   },
   computed: {
@@ -75,18 +59,6 @@ export default {
       const min = (this.firstYearValue === this.minYear || !this.firstYearValue)
         ? this.minMonth : 1;
       const max = this.firstYearValue === this.maxYear ? this.maxMonth : 12;
-      const arr = [];
-      for (let i = min; i <= max; i++) {
-        arr.push(i);
-      }
-      return arr;
-    },
-    firstDayColumn() {
-      const min = (!this.firstYearValue || !this.firstMonthValue
-              || (this.firstYearValue === this.minYear && this.firstMonthValue === this.minMonth))
-        ? this.minDay : 1;
-      const max = (this.firstYearValue === this.maxYear && this.firstMonthValue === this.maxMonth)
-        ? this.maxDay : new Date(this.firstYearValue, this.firstMonthValue, 0).getDate();
       const arr = [];
       for (let i = min; i <= max; i++) {
         arr.push(i);
@@ -111,23 +83,14 @@ export default {
       }
       return arr;
     },
-    secondDayColumn() {
-      const start = (this.firstYearValue === this.secondYearValue
-        && this.firstMonthValue === this.secondMonthValue)
-        ? this.firstDayValue : 1;
-      const end = (this.secondYearValue === this.maxYear && this.secondMonthValue === this.maxMonth)
-        ? this.maxDay : new Date(this.secondYearValue, this.secondMonthValue, 0).getDate();
-      const arr = [];
-      for (let i = start; i <= end; i++) {
-        arr.push(i);
-      }
-      return arr;
-    },
   },
   methods: {
     onChange({ index }) {
       if ((+index) === 0) {
-        const val = `${this.firstYearValue}/${this.firstMonthValue}/${this.firstDayValue}`;
+        if (!this.firstYearValue || !this.firstMonthValue
+        || Number.isNaN(this.firstYearValue)
+        || Number.isNaN(this.firstMonthValue)) return;
+        const val = `${this.firstYearValue}/${this.firstMonthValue}/1`;
         this.$emit('update:startTime', val);
         this.$emit('changeStartTime', val);
         if (this.secondYearValue) {
@@ -136,7 +99,10 @@ export default {
         }
       }
       if ((+index) === 1) {
-        const val = `${this.secondYearValue}/${this.secondMonthValue}/${this.secondDayValue}`;
+        if (!this.secondYearValue || !this.secondMonthValue
+        || Number.isNaN(this.secondYearValue)
+        || Number.isNaN(this.secondMonthValue)) return;
+        const val = `${this.secondYearValue}/${this.secondMonthValue}/1`;
         this.$emit('update:endTime', val);
         this.$emit('changeEndTime', val);
       }
@@ -150,11 +116,9 @@ export default {
           const day = new Date(newVal);
           this.firstYearValue = day.getFullYear();
           this.firstMonthValue = day.getMonth() + 1;
-          this.firstDayValue = day.getDate();
         } else {
           this.firstYearValue = '';
           this.firstMonthValue = '';
-          this.firstDayValue = '';
         }
       },
     },
@@ -165,22 +129,12 @@ export default {
           const day = new Date(newVal);
           this.secondYearValue = day.getFullYear();
           this.secondMonthValue = day.getMonth() + 1;
-          this.secondDayValue = day.getDate();
         } else {
           this.secondYearValue = '';
           this.secondMonthValue = '';
-          this.secondDayValue = '';
         }
       },
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.ar-datetime-picker-day{
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-</style>

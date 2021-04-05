@@ -21,7 +21,7 @@
 import SelectMixins from '../mixins/select';
 
 export default {
-  name: 'ArDatatimePickerYear',
+  name: 'ArDatetimePickerYear',
   mixins: [SelectMixins],
   data() {
     return {
@@ -95,9 +95,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.ar-datetime-picker-year{
-  height: 100%;
-}
-</style>

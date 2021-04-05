@@ -1,10 +1,10 @@
 <template>
-  <div class="ar-datatime-picker-column">
-    <div class="ar-datatime-picker-column-body">
-      <ul class="ar-datatime-picker-column-main"
+  <div class="ar-datetime-picker-column">
+    <div class="ar-datetime-picker-column-body">
+      <ul class="ar-datetime-picker-column-main"
           :style="mainStyle"
       >
-        <li class="ar-datatime-picker-column-item"
+        <li class="ar-datetime-picker-column-item"
             v-for="item in columnList"
             :key="item"
         >
@@ -12,8 +12,8 @@
         </li>
       </ul>
     </div>
-    <div class="ar-datatime-picker-column-mask"></div>
-    <div class="ar-datatime-picker-column-frame"></div>
+    <div class="ar-datetime-picker-column-mask"></div>
+    <div class="ar-datetime-picker-column-frame"></div>
   </div>
 </template>
 
@@ -207,81 +207,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.ar-datatime-picker-column{
-  position: relative;
-  flex: 1;
-  height: 100%;
-  box-sizing: border-box;
-  border-left: 1px solid $ar-border;
-  &:last-of-type{
-    border-right: 1px solid $ar-border;
-  }
-
-  &-mask{
-    position: absolute;
-    top:0;
-    bottom: 0;
-    right: 0;
-    left:0;
-    z-index: 2;
-    background-size: 100% 45%;
-    background-image: linear-gradient(
-        180deg,
-        hsla(0, 0%, 100%, 0.9),
-        hsla(0, 0%, 100%, 0.4)
-      ),
-      linear-gradient(0deg, hsla(0, 0%, 100%, 0.9), hsla(0, 0%, 100%, 0.4));
-    background-repeat: no-repeat;
-    background-position: top, bottom;
-    backface-visibility: hidden;
-    pointer-events: none;
-  }
-
-  &-frame{
-    position: absolute;
-    top: 50%;
-    right: 4px;
-    left: 4px;
-    z-index: 3;
-    height: 44px;
-    transform: translateY(-50%);
-    pointer-events: none;
-    &::after{
-      content: '';
-      position: absolute;
-      box-sizing: border-box;
-      top: -50%;
-      right: -50%;
-      bottom: -50%;
-      left: -50%;
-      border-top: 1px solid $ar-border;
-      border-bottom: 1px solid $ar-border;
-      transform: scale(0.5);
-    }
-  }
-
-  &-body{
-    height: 100%;
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  &-main{
-    max-width: 100vh;
-    transition-timing-function: cubic-bezier(0.23, 1, 0.68, 1);
-  }
-
-  &-item{
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 8px;
-    box-sizing: border-box;
-  }
-}
-</style>

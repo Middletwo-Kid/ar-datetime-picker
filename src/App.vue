@@ -3,7 +3,7 @@
     <p class="datetime-desc">选择的时间： {{startTime}} 至 {{endTime}}</p>
     <button class="datetime-button" @click="handleClick">选择时间</button>
     <action-sheet v-model="show">
-      <datatime-picker
+      <ar-datetime-picker
         unlimitVal="all"
         :startTime.sync="startTime"
         :endTime.sync="endTime"
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import DatatimePicker from './components/DatatimePicker/index.vue';
+// import DatatimePicker from './components/DatatimePicker/index.vue';
 import ActionSheet from './components/ActionSheet/index.vue';
 
 export default {
   name: 'App',
   components: {
-    DatatimePicker,
+    // DatatimePicker,
     ActionSheet,
   },
   data() {
@@ -61,7 +61,7 @@ export default {
 }
 
 .datetime-desc{
-  color: $ar-main;
+  color: rgba(64, 64, 92, 1);
   line-height: 44px;
 }
 
@@ -70,7 +70,7 @@ export default {
   height: 44px;
   width: 80%;
   margin: 8px 0;
-  background: $ar-primary;
+  background: rgba(41, 113, 255, 1);
   color: #fff;
   line-height: 44px;
   text-align: center;

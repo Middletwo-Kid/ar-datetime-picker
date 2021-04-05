@@ -1,12 +1,12 @@
 <template>
-  <div class="ar-datatime-picker-time">
-    <div :class="['ar-datatime-picker-time-select',
-                index===0 ? 'ar-datatime-picker-time-select__active' : '']"
+  <div class="ar-datetime-picker-time">
+    <div :class="['ar-datetime-picker-time-select',
+                index===0 ? 'ar-datetime-picker-time-select__active' : '']"
          @click.stop="handleFocus(0)"
     >{{firstValue}}</div>
-    <div class="ar-datatime-picker-time-gap">至</div>
-    <div :class="['ar-datatime-picker-time-select',
-                index===1 ? 'ar-datatime-picker-time-select__active' : '']"
+    <div class="ar-datetime-picker-time-gap">至</div>
+    <div :class="['ar-datetime-picker-time-select',
+                index===1 ? 'ar-datetime-picker-time-select__active' : '']"
           @click.stop="handleFocus(1)"
     >{{secondValue}}</div>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'ArDatatimePickerTime',
+  name: 'ArDatetimePickerTime',
   props: {
     startTime: [String, Number],
     endTime: [String, Number],
@@ -64,38 +64,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.ar-datatime-picker-time{
-  margin: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-
-  &-select {
-    width: 35%;
-    padding: 0 8px;
-    height: 32px;
-    line-height: 32px;
-    color: $ar-main;
-    text-align: center;
-    transition: all 0.1s ease-in;
-    border-bottom: 1px solid $ar-border;
-    box-sizing: border-box;
-    user-select: none;
-
-    &__active{
-      color: $ar-primary;
-      border-color: $ar-primary;
-    }
-  }
-
-  &-gap{
-    margin: 0 32px;
-    color: $ar-desc;
-    box-sizing: border-box;
-  }
-}
-
-</style>

@@ -1,11 +1,11 @@
 <template>
-  <div class="ar-datatime-picker">
-    <div class="ar-datatime-picker-header">
+  <div class="ar-datetime-picker">
+    <div class="ar-datetime-picker-header">
       <options :options="typeOptions"
                :value.sync="currentType"
                @click="onChangeType" />
     </div>
-    <div class="ar-datatime-picker-select">
+    <div class="ar-datetime-picker-select">
       <select-time ref="options"
                    :type="currentType"
                    :key="currentType"
@@ -13,7 +13,7 @@
                    :endTime="secondValue"
                    @change="onChangeFocus" />
     </div>
-    <div class="ar-datatime-picker-body">
+    <div class="ar-datetime-picker-body">
       <component :is="'select-' + currentType"
                  v-if="isFocus"
                  :startTime.sync="firstValue"
@@ -46,7 +46,7 @@ import Bottom from './src/footer.vue';
 import getTypeOptions from './utils/data';
 
 export default {
-  name: 'ArDatatimePicker',
+  name: 'ArDatetimePicker',
   props: {
     typeOptions: {
       type: Array,
@@ -296,7 +296,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ar-datatime-picker{
+.ar-datetime-picker{
   width: 100%;
   display: flex;
   flex-direction: column;
