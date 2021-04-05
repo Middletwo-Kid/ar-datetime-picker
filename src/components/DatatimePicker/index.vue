@@ -70,6 +70,8 @@ export default {
   data() {
     return {
       currentType: '',
+      prevStartTime: '',
+      prevEndTime: '',
       firstValue: '',
       secondValue: '',
       isFocus: false,
@@ -97,53 +99,51 @@ export default {
         if (newVal) {
           if (newVal === this.unlimitVal) {
             this.firstValue = '';
+            this.prevStartTime = this.firstValue;
             return;
           }
-          switch (this.type) {
-            case 'year': this.firstValue = `${newVal}/1/1`; break;
-            case 'month': this.firstValue = `${newVal}/1`; break;
-            default: {
-              if (!newVal) this.firstValue = newVal;
-              else {
-                const arr = newVal.split('/');
-                if (arr.length === 3) {
-                  this.firstValue = newVal;
-                } else if (arr.length === 2) {
-                  const year = arr[0];
-                  const month = arr[1];
-                  if (year === this.minYear && month === this.minMonth) {
-                    this.firstValue = `${newVal}/${this.minDay}`;
-                  } else {
-                    this.firstValue = `${newVal}/1`;
-                  }
-                } else {
-                  this.firstValue = `${newVal}/${this.minMonth}/${this.minDay}`;
-                }
-              }
-              break;
-            }
+
+          const { minYear, minMonth, minDay } = this.getMin();
+          const arrVal = newVal.split('/');
+          if (arrVal.length === 1) {
+            this.firstValue = `${arrVal[0]}/${minMonth}/${minDay}`;
+          } else if (arrVal.length === 2) {
+            const day = arrVal[0] === minYear && arrVal[1] <= minMonth ? minDay : 1;
+            this.firstValue = `${arrVal[0]}/${minMonth}/${day}`;
+          } else {
+            this.firstValue = newVal;
           }
         } else {
           this.firstValue = '';
         }
+        this.prevStartTime = this.firstValue;
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        if (newVal === this.unlimitVal) {
-          this.secondValue = '';
-          return;
-        }
         if (newVal) {
-          switch (this.type) {
-            case 'year': this.secondValue = `${newVal}/1/1`; break;
-            case 'month': this.secondValue = `${newVal}/1`; break;
-            default: this.secondValue = newVal; break;
+          if (newVal === this.unlimitVal) {
+            this.secondValue = '';
+            this.prevEndTime = this.secondValue;
+            return;
+          }
+
+          const { minYear, minMonth, minDay } = this.getMin();
+          const arrVal = newVal.split('/');
+          if (arrVal.length === 1) {
+            this.secondValue = `${arrVal[0]}/${minMonth}/${minDay}`;
+          } else if (arrVal.length === 2) {
+            const day = arrVal[0] === minYear && arrVal[1] <= minMonth ? minDay : 1;
+            this.secondValue = `${arrVal[0]}/${minMonth}/${day}`;
+          } else {
+            this.secondValue = newVal;
           }
         } else {
           this.secondValue = '';
         }
+
+        this.prevEndTime = this.secondValue;
       },
     },
   },
@@ -156,28 +156,35 @@ export default {
       this.currentType = value;
       this.$emit('update:type', value);
       this.$emit('changeType', value);
-      if ((this.startTime && this.startTime.length === 0)
+
+      if (!this.startTime || this.startTime.length === 0
       || this.startTime === this.unlimitVal) {
         this.firstValue = '';
         this.secondValue = '';
         return;
       }
 
-      const startTime = new Date(this.startTime);
-      const endTime = new Date(this.endTime);
+      const startTime = new Date(this.prevStartTime);
+      const endTime = new Date(this.prevEndTime);
       const startYear = startTime.getFullYear();
       const startMonth = startTime.getMonth() + 1;
+      const startDay = startTime.getDate();
       const endYear = endTime.getFullYear();
       const endMonth = endTime.getMonth() + 1;
+      const endDay = endTime.getDate();
 
       if ((value === 'month' && startYear === this.minYear)
           || (value === 'day' && startYear === this.minYear && startMonth <= this.minMonth)) {
         this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
+      } else {
+        this.firstValue = `${startYear}/${startMonth}/${startDay}`;
       }
 
       if ((value === 'month' && endYear === this.minYear)
           || (value === 'day' && endYear === this.minYear && endMonth <= this.minMonth)) {
         this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
+      } else {
+        this.secondValue = `${endYear}/${endMonth}/${endDay}`;
       }
     },
     onChangeFocus(index) {
@@ -212,7 +219,6 @@ export default {
           secondValue = this.secondValue;
           break;
       }
-
       this.$emit('update:startTime', firstValue);
       this.$emit('update:endTime', secondValue);
       this.$emit('confirm', {
@@ -249,20 +255,42 @@ export default {
       }
       return value;
     },
+    getMax() {
+      const maxYear = this.maxTime
+        ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
+      const maxMonth = this.maxTime
+        ? new Date(this.maxTime).getMonth() + 1 : 12;
+      const maxDay = this.maxTime
+        ? new Date(this.maxTime).getDate() : new Date(this.maxYear, this.maxMonth, 0).getDate();
+      return {
+        maxYear,
+        maxMonth,
+        maxDay,
+      };
+    },
+    getMin() {
+      const minYear = this.minTime
+        ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
+      const minMonth = this.minTime
+        ? new Date(this.minTime).getMonth() + 1 : 1;
+      const minDay = this.minTime
+        ? new Date(this.minTime).getDate() : 1;
+      return {
+        minYear,
+        minMonth,
+        minDay,
+      };
+    },
   },
   created() {
-    this.maxYear = this.maxTime
-      ? new Date(this.maxTime).getFullYear() : new Date().getFullYear() + 10;
-    this.maxMonth = this.maxTime
-      ? new Date(this.maxTime).getMonth() + 1 : 12;
-    this.maxDay = this.maxTime
-      ? new Date(this.maxTime).getDate() : new Date(this.maxYear, this.maxMonth, 0).getDate();
-    this.minYear = this.minTime
-      ? new Date(this.minTime).getFullYear() : new Date().getFullYear() - 10;
-    this.minMonth = this.minTime
-      ? new Date(this.minTime).getMonth() + 1 : 1;
-    this.minDay = this.minTime
-      ? new Date(this.minTime).getDate() : 1;
+    const { minYear, minMonth, minDay } = this.getMin();
+    const { maxYear, maxMonth, maxDay } = this.getMax();
+    this.maxYear = maxYear;
+    this.maxMonth = maxMonth;
+    this.maxDay = maxDay;
+    this.minYear = minYear;
+    this.minMonth = minMonth;
+    this.minDay = minDay;
   },
 };
 </script>

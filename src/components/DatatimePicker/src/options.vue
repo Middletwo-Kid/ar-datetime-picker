@@ -40,6 +40,7 @@ export default {
   border: 1px solid $ar-primary;
   border-radius: 4px;
   box-sizing: border-box;
+  overflow: hidden;
 
   &-item{
     padding: 0 16px;
