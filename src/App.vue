@@ -1,38 +1,17 @@
 <template>
   <div id="app">
-    <p class="datetime-desc">选择的时间： {{startTime}} 至 {{endTime}}</p>
-    <button class="datetime-button" @click="handleClick">选择时间</button>
-    <action-sheet v-model="show">
-      <ar-datetime-picker
-        unlimitVal="all"
-        :startTime.sync="startTime"
-        :endTime.sync="endTime"
-        :minTime="minTime"
-        :maxTime="maxTime"
-        @confirm="onConfirm"
-        @cancel="onCancel"
-        @unlimit="onUnlimit" />
-    </action-sheet>
+    <button class="datetime-button" @click="handleClick">显示遮罩</button>
+    <ar-overlay :show="show"
+                @click="onClose" />
   </div>
 </template>
 
 <script>
-// import DatatimePicker from './components/DatatimePicker/index.vue';
-import ActionSheet from './components/ActionSheet/index.vue';
 
 export default {
   name: 'App',
-  components: {
-    // DatatimePicker,
-    ActionSheet,
-  },
   data() {
     return {
-      startTime: '',
-      endTime: '',
-      type: 'day',
-      maxTime: '2022/4/2',
-      minTime: '2014/4/2',
       show: false,
     };
   },
@@ -40,13 +19,7 @@ export default {
     handleClick() {
       this.show = true;
     },
-    onConfirm() {
-      this.show = false;
-    },
-    onCancel() {
-      this.show = false;
-    },
-    onUnlimit() {
+    onClose() {
       this.show = false;
     },
   },

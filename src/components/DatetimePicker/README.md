@@ -1,4 +1,4 @@
-## DatatimePicker 时间选择
+## DatetimePicker 时间选择
 
 ### 介绍
 
@@ -8,9 +8,9 @@
 
 ```js
 import Vue from 'vue';
-import { DatatimePicker } from 'ar-ui';
+import { DatetimePicker } from 'ar-ui';
 
-Vue.use(DatatimePicker);
+Vue.use(DatetimePicker);
 ```
 
 ### 代码演示
@@ -33,8 +33,8 @@ Vue.use(DatatimePicker);
 | 事件名    | 说明                       | 回调参数                       |
 | --------- | -------------------------- | ------------------------------ |
 | `confrim` | 点击确定按钮时触发的事件。 | `{startTime: '', endTime: ''}` |
-| `unlimit` | 点击不限按钮时触发的事件。 | 无                             |
-| `cancel`  | 点击取消按钮时触发的事件。 | 无                             |
+| `unlimit` | 点击不限按钮时触发的事件。 | `event: Event`                             |
+| `cancel`  | 点击取消按钮时触发的事件。 | `event: Event`                             |
 | `changeType`  |     改变类型时触发的事件。                       |        `year 或者 month 或者 day`                        |
 | `changeStartTime`  |     选择起始时间时触发的事件。                       |        `''`                        |
 | `changeEndTime`  |     选择结束时间时触发的事件。                       |        `''`                        |

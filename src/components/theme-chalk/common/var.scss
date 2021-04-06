@@ -6,6 +6,12 @@ $grey: rgba(171, 172, 180, 1);
 $lightGrey: #F2F4F7;
 $deepBlue: rgba(34, 94, 214, 1);
 
+// Animation
+$animation-duration-base: 0.3s;
+$animation-duration-fast: 0.2s;
+$animation-timing-function-enter: ease-out;
+$animation-timing-function-leave: ease-in;
+
 $ar-primary: $blue;
 $ar-primary-active: $deepBlue;
 $ar-warn: $orange;
@@ -13,3 +19,4 @@ $ar-title: $black;
 $ar-main: $gray;
 $ar-desc: $grey;
 $ar-border: $lightGrey;
+$ar-mask-color: rgba(0, 0, 0, 0.7);

@@ -1,0 +1,33 @@
+@import './var.scss';
+
+.ar-fade {
+  &-enter-active {
+    animation: $animation-duration-base ar-fade-in both
+      $animation-timing-function-enter;
+  }
+
+  &-leave-active {
+    animation: $animation-duration-base ar-fade-out both
+      $animation-timing-function-leave;
+  }
+}
+
+@keyframes ar-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ar-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

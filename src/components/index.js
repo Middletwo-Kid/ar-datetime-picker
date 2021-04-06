@@ -1,7 +1,9 @@
 import DatetimePicker from './DatetimePicker/index.vue';
+import Overlay from './Overlay/index.vue';
 
 const components = [
   DatetimePicker,
+  Overlay,
 ];
 
 const install = (Vue) => {

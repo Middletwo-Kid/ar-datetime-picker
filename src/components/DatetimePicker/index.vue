@@ -226,7 +226,7 @@ export default {
         endTime: secondValue,
       });
     },
-    onUnlimit() {
+    onUnlimit(e) {
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
@@ -234,15 +234,15 @@ export default {
       this.secondValue = '';
       this.$emit('update:startTime', this.unlimitVal);
       this.$emit('update:endTime', this.unlimitVal);
-      this.$emit('unlimit');
+      this.$emit('unlimit', e);
     },
-    onCancel() {
+    onCancel(e) {
       this.isFocus = false;
       this.focusIndex = '';
       this.$refs.options.reset();
       this.firstValue = this.startTime;
       this.secondValue = this.endTime;
-      this.$emit('cancel');
+      this.$emit('cancel', e);
     },
     getResult(val) {
       let value;
