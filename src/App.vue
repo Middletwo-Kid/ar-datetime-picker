@@ -2,7 +2,7 @@
   <div id="app">
     <p class="datetime-desc">选择的时间： {{startTime}} 至 {{endTime}}</p>
     <button class="datetime-button" @click="handleClick">选择时间</button>
-    <ar-action-sheet v-model="show">
+    <ar-popup v-model="show">
       <ar-datetime-picker
         unlimitVal="all"
         :startTime.sync="startTime"
@@ -12,7 +12,7 @@
         @confirm="onConfirm"
         @cancel="onCancel"
         @unlimit="onUnlimit" />
-    </ar-action-sheet>
+    </ar-popup>
   </div>
 </template>
 

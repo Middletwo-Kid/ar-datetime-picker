@@ -1,11 +1,11 @@
 import DatetimePicker from './DatetimePicker/index.vue';
-import ActionSheet from './ActionSheet/index.vue';
 import Overlay from './Overlay/index.vue';
+import Popup from './Popup/index.vue';
 
 const components = [
-  ActionSheet,
   DatetimePicker,
   Overlay,
+  Popup,
 ];
 
 const install = (Vue) => {
@@ -20,8 +20,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  ActionSheet,
   DatetimePicker,
   Overlay,
+  Popup,
   install,
 };
