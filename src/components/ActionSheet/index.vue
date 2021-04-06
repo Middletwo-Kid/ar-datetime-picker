@@ -1,10 +1,12 @@
 <template>
+  <transition name="ar-fade">
   <div class="ar-action-sheet" v-if="show">
     <div class="ar-action-sheet-mask" @click.self="handleHidden" />
     <div class="ar-action-sheet-main">
       <slot />
     </div>
   </div>
+  </transition>
 </template>
 
 <script>

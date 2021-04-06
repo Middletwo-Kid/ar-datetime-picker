@@ -1,7 +1,9 @@
 import DatetimePicker from './DatetimePicker/index.vue';
+import ActionSheet from './ActionSheet/index.vue';
 import Overlay from './Overlay/index.vue';
 
 const components = [
+  ActionSheet,
   DatetimePicker,
   Overlay,
 ];
@@ -18,6 +20,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
+  ActionSheet,
   DatetimePicker,
+  Overlay,
   install,
 };
