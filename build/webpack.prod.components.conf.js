@@ -6,6 +6,8 @@ const buildConfig = {
   mode: 'production',
   entry: {
     'datetime-picker': './src/components/DatetimePicker/index.js',
+    overlay: './src/components/Overlay/index.js',
+    popup: './src/components/Popup/index.js',
   },
   output: {
     path: path.resolve(__dirname, '../lib'),

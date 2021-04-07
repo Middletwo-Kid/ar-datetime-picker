@@ -1,34 +1,61 @@
-# ar-datatime-picker
+# ar-datetime-picker
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+## 安装
+```bash
+npm install --save armouy-ui-test
 ```
 
-### Compiles and minifies for production
-```
-yarn build
+## 引入
+### 全局引入
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import ArUi from 'armouy-ui-test'
+import "armouy-ui-test/lib/theme-chalk/index.css";
+Vue.use(ArUi)
+
+Vue.config.productionTip = false
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
+
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+以上代码便完成了 ArDatetimePicker 的引入。需要注意的是，样式文件需要单独引入。
 
-### Run your end-to-end tests
+### 按需引入
+```bash
+npm install babel-plugin-component -D
 ```
-yarn test:e2e
-```
+修改`babel.config.js`:
+```js
+module.exports = {
+  presets: [
+    '@vue/cli-plugin-babel/preset'
+  ],
+  plugins: [
+    [
+      "component",
+      {
+        "libraryName": "armouy-ui-test",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ]
+}
 
-### Lints and fixes files
 ```
-yarn lint
-```
+修改`main.js`:
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import { DatetimePicker } from 'armouy-ui-test'
+Vue.use(DatetimePicker)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Vue.config.productionTip = false
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
+```

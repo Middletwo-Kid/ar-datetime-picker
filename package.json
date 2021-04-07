@@ -1,11 +1,16 @@
 {
   "name": "armouy-ui-test",
-  "version": "0.5.5",
+  "version": "0.5.12",
   "private": false,
   "main": "./lib/index.js",
   "author": "Armouy",
   "license": "MIT",
   "description": "mobile UI library",
+  "files": [
+    "lib/*",
+    "README.md",
+    "src/components"
+  ],
   "scripts": {
     "serve": "npm run build:theme && npm run build:umd && vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -48,5 +53,8 @@
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.0",
     "vue-loader": "15.9.3"
+  },
+  "peerDependencies": {
+    "vue": ">= 2.5.22"
   }
 }
