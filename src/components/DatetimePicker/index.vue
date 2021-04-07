@@ -1,7 +1,8 @@
 <template>
   <div class="ar-datetime-picker">
     <div class="ar-datetime-picker-header">
-      <options :options="typeOptions"
+      <options v-if="typeOptions && typeOptions.length > 1"
+               :options="typeOptions"
                :value.sync="currentType"
                @click="onChangeType" />
     </div>
