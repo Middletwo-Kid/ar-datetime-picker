@@ -62,5 +62,11 @@ export default {
       },
     },
   },
+  mounted() {
+    this.index = '';
+  },
+  deactivated() {
+    this.index = '';
+  },
 };
 </script>
