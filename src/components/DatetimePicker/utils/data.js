@@ -1,11 +1,11 @@
 const getTypeOptions = () => [{
-  name: '年',
+  name: '按年',
   value: 'year',
 }, {
-  name: '月',
+  name: '按月',
   value: 'month',
 }, {
-  name: '日',
+  name: '按日期',
   value: 'day',
 }];
 

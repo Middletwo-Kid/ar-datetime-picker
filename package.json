@@ -1,19 +1,18 @@
 {
-  "name": "armouy-ui-test",
-  "version": "0.5.12",
+  "name": "ar-datetime-picker",
+  "version": "0.0.1",
   "private": false,
   "main": "./lib/index.js",
   "author": "Armouy",
   "license": "MIT",
-  "description": "mobile UI library",
+  "description": "datetime-picker UI base Vue",
   "files": [
     "lib/*",
-    "README.md",
-    "src/components"
+    "README.md"
   ],
   "scripts": {
-    "serve": "npm run build:theme && npm run build:umd && vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "npm run build:theme && npm run build:umd && npm run build:components && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
@@ -43,16 +42,17 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
     "gulp-cssmin": "^0.2.0",
     "gulp-sass": "^4.1.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
+    "vue-loader": "15.9.3",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.44.1",
     "webpack-cli": "3.3.12",
-    "webpack-dev-server": "3.11.0",
-    "vue-loader": "15.9.3"
+    "webpack-dev-server": "3.11.0"
   },
   "peerDependencies": {
     "vue": ">= 2.5.22"

@@ -4,8 +4,7 @@
     <button class="datetime-button" @click="handleClick">选择时间</button>
     <ar-popup v-model="show">
       <ar-datetime-picker
-        unlimitVal="all"
-        :typeOptions="typeOptions"
+        :type.sync="type"
         :startTime.sync="startTime"
         :endTime.sync="endTime"
         :minTime="minTime"
@@ -23,10 +22,6 @@ export default {
   name: 'App',
   data() {
     return {
-      typeOptions: [{
-        name: '日',
-        value: 'day',
-      }],
       startTime: '',
       endTime: '',
       type: 'day',
