@@ -220,6 +220,8 @@ export default {
           secondValue = this.secondValue;
           break;
       }
+      this.isFocus = false;
+      this.$refs.options.reset();
       this.$emit('update:startTime', firstValue);
       this.$emit('update:endTime', secondValue);
       this.$emit('confirm', {
