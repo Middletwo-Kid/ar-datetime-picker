@@ -46,6 +46,9 @@ import SelectDay from './src/day.vue';
 import Bottom from './src/footer.vue';
 import getTypeOptions from './utils/data';
 
+const today = new Date();
+const dayStr = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+
 export default {
   name: 'ArDatetimePicker',
   props: {
@@ -201,23 +204,22 @@ export default {
       this.$emit('changeEndTime', value);
     },
     onComfirm() {
-      if (!this.firstValue || !this.secondValue
-      || this.firstValue === this.unlimitVal
-      || this.secondValue === this.unlimitVal) return;
+      if (!this.firstValue || this.firstValue === this.unlimitVal) return;
       let firstValue = '';
+      const secondValueTemp = this.secondValue ? this.secondValue : dayStr;
       let secondValue = '';
       switch (this.currentType) {
         case 'year':
           firstValue = this.firstValue.slice(0, 4);
-          secondValue = this.secondValue.slice(0, 4);
+          secondValue = secondValueTemp.slice(0, 4);
           break;
         case 'month':
           firstValue = this.firstValue.slice(0, 6);
-          secondValue = this.secondValue.slice(0, 6);
+          secondValue = secondValueTemp.slice(0, 6);
           break;
         default:
           firstValue = this.firstValue;
-          secondValue = this.secondValue;
+          secondValue = secondValueTemp;
           break;
       }
       this.isFocus = false;
