@@ -297,6 +297,12 @@ export default {
     this.minMonth = minMonth;
     this.minDay = minDay;
   },
+  deactivated() {
+    this.isFocus = false;
+  },
+  beforeDestroy() {
+    this.isFocus = false;
+  },
 };
 </script>
 
