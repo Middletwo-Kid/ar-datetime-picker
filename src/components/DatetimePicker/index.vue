@@ -165,15 +165,13 @@ export default {
       const endMonth = endTime.getMonth() + 1;
       const endDay = endTime.getDate();
 
-      if ((value === 'month' && startYear === this.minYear)
-          || (value === 'day' && startYear === this.minYear && startMonth <= this.minMonth)) {
+      if ((value === 'month' || value === 'day') && startYear === this.minYear && startMonth <= this.minMonth) {
         this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
       } else {
         this.firstValue = `${startYear}/${startMonth}/${startDay}`;
       }
 
-      if ((value === 'month' && endYear === this.minYear)
-          || (value === 'day' && endYear === this.minYear && endMonth <= this.minMonth)) {
+      if ((value === 'month' || value === 'day') && endYear === this.minYear && endMonth <= this.minMonth) {
         this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
       } else {
         this.secondValue = `${endYear}/${endMonth}/${endDay}`;
