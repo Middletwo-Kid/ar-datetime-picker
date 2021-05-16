@@ -22,11 +22,11 @@ export default {
   name: 'App',
   data() {
     return {
-      startTime: '',
-      endTime: '',
-      type: 'day',
+      startTime: '2021/03',
+      endTime: '2021/03',
+      type: 'month',
       maxTime: '2022/4/2',
-      minTime: '2014/4/2',
+      minTime: '2021/4/2',
       show: false,
     };
   },

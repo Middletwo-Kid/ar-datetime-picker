@@ -100,58 +100,46 @@ export default {
     startTime: {
       immediate: true,
       handler(newVal) {
-        if (newVal) {
-          if (newVal === this.unlimitVal) {
-            this.firstValue = '';
-            this.prevStartTime = this.firstValue;
-            return;
-          }
-
-          const { minYear, minMonth, minDay } = this.getMin();
-          const arrVal = newVal.split('/');
-          if (arrVal.length === 1) {
-            this.firstValue = `${arrVal[0]}/${minMonth}/${minDay}`;
-          } else if (arrVal.length === 2) {
-            const day = arrVal[0] === minYear && arrVal[1] <= minMonth ? minDay : 1;
-            this.firstValue = `${arrVal[0]}/${minMonth}/${day}`;
-          } else {
-            this.firstValue = newVal;
-          }
-        } else {
-          this.firstValue = '';
+        if (this.currentType !== 'year' && newVal && !newVal.includes('/')) {
+          throw new Error('startTime invalid. Please input like yyyy/mm/dd');
         }
+        this.firstValue = this.handleValue(newVal);
         this.prevStartTime = this.firstValue;
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        if (newVal) {
-          if (newVal === this.unlimitVal) {
-            this.secondValue = '';
-            this.prevEndTime = this.secondValue;
-            return;
-          }
-
-          const { minYear, minMonth, minDay } = this.getMin();
-          const arrVal = newVal.split('/');
-          if (arrVal.length === 1) {
-            this.secondValue = `${arrVal[0]}/${minMonth}/${minDay}`;
-          } else if (arrVal.length === 2) {
-            const day = arrVal[0] === minYear && arrVal[1] <= minMonth ? minDay : 1;
-            this.secondValue = `${arrVal[0]}/${minMonth}/${day}`;
-          } else {
-            this.secondValue = newVal;
-          }
-        } else {
-          this.secondValue = '';
+        if (this.currentType !== 'year' && newVal && !newVal.includes('/')) {
+          throw new Error('endTime invalid. Please input like yyyy/mm/dd');
         }
-
+        this.secondValue = this.handleValue(newVal);
         this.prevEndTime = this.secondValue;
       },
     },
   },
   methods: {
+    handleValue(newVal) {
+      if (newVal && newVal !== this.unlimitVal) {
+        let value = '';
+        const { minYear, minMonth, minDay } = this.getMin();
+        const arrVal = newVal.split('/');
+        if (arrVal.length === 1) {
+          value = `${arrVal[0]}/${minMonth}/${minDay}`;
+        } else if (arrVal.length === 2) {
+          const month = arrVal[0] === minYear && parseInt(arrVal[1], 10) <= minMonth
+            ? minMonth : parseInt(arrVal[1], 10);
+          const day = month <= minMonth ? minDay : 1;
+          value = `${arrVal[0]}/${month}/${day}`;
+        } else {
+          value = newVal;
+        }
+
+        return value;
+      }
+      return '';
+    },
+
     onChangeType(value) {
       if (value === this.type) return;
       this.isFocus = false;
