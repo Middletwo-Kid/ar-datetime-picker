@@ -123,7 +123,7 @@ export default {
       if (newVal && newVal !== this.unlimitVal) {
         let value = '';
         const { minYear, minMonth, minDay } = this.getMin();
-        const arrVal = newVal.split('/');
+        const arrVal = newVal.toString().split('/');
         if (arrVal.length === 1) {
           value = `${arrVal[0]}/${minMonth}/${minDay}`;
         } else if (arrVal.length === 2) {
@@ -194,18 +194,35 @@ export default {
       let firstValue = '';
       const secondValueTemp = this.secondValue ? this.secondValue : dayStr;
       let secondValue = '';
+      const firstValueDay = new Date(this.firstValue);
+      const secondValueDay = new Date(secondValueTemp);
+      const year1 = firstValueDay.getFullYear();
+      const month1 = firstValueDay.getMonth() + 1;
+      const day1 = firstValueDay.getDate();
+      const year2 = secondValueDay.getFullYear();
+      const month2 = secondValueDay.getMonth() + 1;
+      const day2 = secondValueDay.getDate();
       switch (this.currentType) {
         case 'year':
-          firstValue = this.firstValue.slice(0, 4);
-          secondValue = secondValueTemp.slice(0, 4);
+          firstValue = year1;
+          secondValue = year1 > year2 ? year1 : year2;
           break;
         case 'month':
-          firstValue = this.firstValue.slice(0, 6);
-          secondValue = secondValueTemp.slice(0, 6);
+          firstValue = `${year1}/${month1}`;
+          if (year1 > year2 || (year1 === year2 && month1 > month2)) {
+            secondValue = `${year1}/${month1}`;
+          } else {
+            secondValue = `${year2}/${month2}`;
+          }
           break;
         default:
-          firstValue = this.firstValue;
-          secondValue = secondValueTemp;
+          firstValue = `${year1}/${month1}/${day1}`;
+          if (year1 > year2 || (year1 === year2 && month1 > month2)
+            || (year1 === year2 && month1 === month2 && day1 > day2)) {
+            secondValue = `${year1}/${month1}/${day1}`;
+          } else {
+            secondValue = `${year2}/${month2}/${day2}`;
+          }
           break;
       }
       this.isFocus = false;

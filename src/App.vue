@@ -25,7 +25,7 @@ export default {
       startTime: '',
       endTime: '',
       type: 'month',
-      maxTime: '2022/4/2',
+      maxTime: '2022/5/25',
       minTime: '2021/4/2',
       show: false,
     };
