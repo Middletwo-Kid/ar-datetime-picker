@@ -100,20 +100,16 @@ export default {
     startTime: {
       immediate: true,
       handler(newVal) {
-        if (this.currentType !== 'year' && newVal && !newVal.includes('/')) {
-          throw new Error('startTime invalid. Please input like yyyy/mm/dd');
-        }
-        this.firstValue = this.handleValue(newVal);
+        const val = newVal ? newVal.toString().replace(/-/g, '/') : '';
+        this.firstValue = this.handleValue(val);
         this.prevStartTime = this.firstValue;
       },
     },
     endTime: {
       immediate: true,
       handler(newVal) {
-        if (this.currentType !== 'year' && newVal && !newVal.includes('/')) {
-          throw new Error('endTime invalid. Please input like yyyy/mm/dd');
-        }
-        this.secondValue = this.handleValue(newVal);
+        const val = newVal ? newVal.toString().replace(/-/g, '/') : '';
+        this.secondValue = this.handleValue(val);
         this.prevEndTime = this.secondValue;
       },
     },
@@ -155,15 +151,10 @@ export default {
         this.secondValue = '';
         return;
       }
-
       const startTime = new Date(this.prevStartTime);
-      const endTime = new Date(this.prevEndTime);
       const startYear = startTime.getFullYear();
       const startMonth = startTime.getMonth() + 1;
       const startDay = startTime.getDate();
-      const endYear = endTime.getFullYear();
-      const endMonth = endTime.getMonth() + 1;
-      const endDay = endTime.getDate();
 
       if ((value === 'month' || value === 'day') && startYear === this.minYear && startMonth <= this.minMonth) {
         this.firstValue = `${startYear}/${this.minMonth}/${this.minDay}`;
@@ -171,10 +162,18 @@ export default {
         this.firstValue = `${startYear}/${startMonth}/${startDay}`;
       }
 
-      if ((value === 'month' || value === 'day') && endYear === this.minYear && endMonth <= this.minMonth) {
-        this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
+      if (this.prevEndTime) {
+        const endTime = new Date(this.prevEndTime);
+        const endYear = endTime.getFullYear();
+        const endMonth = endTime.getMonth() + 1;
+        const endDay = endTime.getDate();
+        if ((value === 'month' || value === 'day') && endYear === this.minYear && endMonth <= this.minMonth) {
+          this.secondValue = `${endYear}/${this.minMonth}/${this.minDay}`;
+        } else {
+          this.secondValue = `${endYear}/${endMonth}/${endDay}`;
+        }
       } else {
-        this.secondValue = `${endYear}/${endMonth}/${endDay}`;
+        this.secondValue = '';
       }
     },
     onChangeFocus(index) {

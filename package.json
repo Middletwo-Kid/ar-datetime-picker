@@ -1,6 +1,6 @@
 {
   "name": "ar-datetime-picker",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "private": false,
   "main": "./lib/index.js",
   "author": "Armouy",
@@ -10,6 +10,12 @@
     "lib/*",
     "README.md"
   ],
+  "homepage": "https://middletwo-kid.github.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Middletwo-Kid/ar-datetime-picker.git"
+  },
+  "keywords": ["vue", "datetime-picker"],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run build:theme && npm run build:umd && npm run build:components && vue-cli-service build",

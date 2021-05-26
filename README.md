@@ -1,5 +1,15 @@
 # ar-datetime-picker
 
+## 介绍
+基于`vue`的移动端时间选择器，支持`按年、按月、按日期`的组合选择。
+
+仓库地址：[github地址](https://github.com/Middletwo-Kid/ar-datetime-picker.git)
+
+预览地址：[Demo](https://middletwo-kid.github.io/)
+
+![demo](https://middletwo-kid.github.io/demo.gif)
+
+
 ## 安装
 ```bash
 npm install --save ar-datetime-picker
@@ -59,6 +69,28 @@ new Vue({
   render: h => h(App),
 }).$mount('#app')
 ```
+
+## Props
+
+| 参数          | 描述               | 类型     | 参考值                                                       |
+| ------------- | ------------------ | -------- | ------------------------------------------------------------ |
+| `typeOptions` | 类型选择器         | `array`  | `[{name: '按年', value: 'year'}, {name: '按月', value: 'month'}]` |
+| `type`        | 当前类型           | `string` | `'' | year | month | day`                                    |
+| `startTime`   | 开始时间           | `string` | `'' | 2020 | 2020/1 | 2020/1/1`                              |
+| `endTime`     | 结束时间           | `string` | `'' |2020 |2020/1 | 2020/1/1`                                |
+| `minTime`     | 最早起始时间       | `string` | `2020/1/1`，为空时，默认为前十年                             |
+| `maxTime`     | 最晚结束时间       | `string` | `2020/1/1`，为空时，默认为后十年                             |
+| `unlimitVal`  | 选择不限时对应的值 | `string` | 可为空                                                       |
+
+**`typeOptions`为对象数组，固定由`name`和`value`对象组成，其中`name`可以自定义，`value`仅限制`year、month和day`。**
+
+## API
+
+| 事件名称    | 描述               | 参数                                     |
+| ----------- | ------------------ | ---------------------------------------- |
+| `onComfirm` | 点击确定的回调事件 | `{ startTime: string, endTime: string }` |
+| `onUnlimit` | 点击不限的回调事件 | `e:Event`                                |
+| `onCancel`  | 点击取消的回调事件 | `e:Event`                                |
 
 ## Dome
 ```html
